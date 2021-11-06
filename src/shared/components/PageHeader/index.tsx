@@ -27,7 +27,7 @@ export function PageHeader({
 
   if(isLoading) {
     return (
-      <div className="flex animate-bounce border-b pb-3 items-center mb-3">
+      <div className="flex animate-pulse border-b pb-3 items-center mb-3">
         <div>
           <div className="h-9 w-9 flex-center bg-gray-200 mr-3 rounded-full"></div>
         </div>
@@ -35,7 +35,7 @@ export function PageHeader({
           <div className="h-6 rounded  w-72 bg-gray-200 text-gray-200"></div>
           <div className="h-4 rounded w-48 flex bg-gray-100"></div>
         </div>
-        <div className='flex animate-bounce gap-3 ml-auto'>
+        <div className='flex animate-pulse gap-3 ml-auto'>
           <div className="h-8 w-20 bg-gray-200 rounded-full"></div>
           <div className="h-8 w-20 bg-gray-200 rounded-full"></div>
           <div className="h-8 w-20 bg-gray-200 rounded-full"></div>

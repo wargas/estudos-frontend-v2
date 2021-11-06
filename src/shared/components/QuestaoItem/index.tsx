@@ -3,14 +3,14 @@ import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 import {
-  FaCheck,
-  FaChevronLeft,
-  FaChevronRight,
-  FaComment,
-  FaEdit,
-  FaSync,
-  FaTimes,
-  FaTrash
+    FaCheck,
+    FaChevronLeft,
+    FaChevronRight,
+    FaComment,
+    FaEdit,
+    FaSync,
+    FaTimes,
+    FaTrash
 } from 'react-icons/fa';
 import { generatePath, useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -400,7 +400,7 @@ export function QuestaoItem({ questoes }: Props) {
 
 function QuestaoSkeleton() {
   return (
-    <div className='py-5 px-8 flex animate-bounce flex-col gap-1'>
+    <div className='py-5 px-8 flex animate-pulse flex-col gap-1'>
       <div className='h-6 bg-gray-200 w-1/3 rounded'></div>
       <div className='h-2'></div>
       <div className='h-6 bg-gray-200 w-3/4 rounded'></div>
