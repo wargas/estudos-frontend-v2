@@ -22,7 +22,7 @@ export function PageHeader({
     document.title = title || '';
 
     return () => { document.title = 'App Estudos' }
-  }, []);
+  }, [title]);
 
 
   if(isLoading) {
