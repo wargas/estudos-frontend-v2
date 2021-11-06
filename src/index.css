@@ -25,9 +25,8 @@
 }
 
 .enunciado table tr td,th {
-  @apply px-3
+  @apply px-3;
 }
-
 
 .enunciado ul {
   list-style-type: square;
