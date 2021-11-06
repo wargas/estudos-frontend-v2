@@ -24,7 +24,7 @@ jobs:
           server: deltex-work.umbler.net
           username: deltex-work
           password: ${{ secrets.password }}
-          local-dir: ./build
+          local-dir: ./build/
           server-dir: public/
       
       
