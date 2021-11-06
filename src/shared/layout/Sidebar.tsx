@@ -7,7 +7,7 @@ import { AlterarSenha } from '../components/AlterarSenha';
 import { useDrawer } from '../components/Drawer';
 
 
-export default function Sidebar() {
+const Sidebar = () => {
 
   const openDrawer = useDrawer()
   const { logout, user } = useAuth()
@@ -112,3 +112,5 @@ export default function Sidebar() {
     </div>
   );
 }
+
+export default Sidebar

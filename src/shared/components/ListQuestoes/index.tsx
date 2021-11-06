@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 import { Questao, Respondida } from '../../interfaces';
 
 export function ListQuestoes({ questoes, data, respondidas }: Props) {

@@ -17,7 +17,7 @@ import { PageHeader } from '../../shared/components/PageHeader';
 import { Disciplina } from '../../shared/interfaces';
 
 export function Disciplinas() {
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [search, setSearch] = useState('');
 
   const history = useHistory();
