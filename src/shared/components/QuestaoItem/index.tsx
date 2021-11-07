@@ -3,14 +3,14 @@ import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 import {
-    FaCheck,
-    FaChevronLeft,
-    FaChevronRight,
-    FaComment,
-    FaEdit,
-    FaSync,
-    FaTimes,
-    FaTrash
+  FaCheck,
+  FaChevronLeft,
+  FaChevronRight,
+  FaComment,
+  FaEdit,
+  FaSync,
+  FaTimes,
+  FaTrash
 } from 'react-icons/fa';
 import { generatePath, useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -23,6 +23,9 @@ import { EditQuestao } from '../EditQuestoes';
 import { Estatisticas } from '../Estatisticas';
 import { Markdown } from '../Markdown';
 import { useModal } from '../Modal';
+import { useQueue } from '../QueueHook';
+import { QuestaoSkeleton } from './QuestaoSkeleton';
+import { QuestaoStates } from './QuestaoStates';
 
 type Params = {
   disciplina_id: string;
@@ -34,7 +37,6 @@ type Props = { questoes: number[] };
 
 export function QuestaoItem({ questoes }: Props) {
   const [questao, setQuestao] = useState<Questao>();
-  const [list, setList] = useState<number[]>(questoes);
   const [loading, setLoading] = useState(false);
   const [loadingResponder, setLoadingResponder] = useState(false);
   const [riscadas, setRiscadas] = useState<string[]>([]);
@@ -43,13 +45,22 @@ export function QuestaoItem({ questoes }: Props) {
 
   const params = useParams<Params>();
   const history = useHistory();
+  const { current, next, prev, hasNext, hasPrev, items, goto, remove } =
+    useQueue<number>(questoes);
   const openDrawer = useDrawer();
   const openModal = useModal();
+
+  useEffect(() => {
+    if (current) history.push(current.toString());
+  }, [current]);
 
   useEffect(() => {
     loadQuestao();
     setRiscadas([]);
     setMarcada('');
+    if (current.toString() !== params.questao_id) {
+      goto(Number(params.questao_id));
+    }
   }, [params.questao_id]);
 
   useEffect(() => {
@@ -82,11 +93,11 @@ export function QuestaoItem({ questoes }: Props) {
 
     if (keysLineners.has(event.key)) {
       if (event.key === 'ArrowRight') {
-        next(1);
+        next();
       }
 
       if (event.key === 'ArrowLeft') {
-        next(-1);
+        prev();
       }
 
       if (event.key === 'Enter') {
@@ -104,15 +115,6 @@ export function QuestaoItem({ questoes }: Props) {
       }
 
       event.preventDefault();
-    }
-  }
-
-  function next(fator = 0) {
-    const nextIndex = list.indexOf(Number(params.questao_id));
-    const nextId = list[nextIndex + fator];
-
-    if (nextId) {
-      history.push(makeRoute(nextId));
     }
   }
 
@@ -158,16 +160,8 @@ export function QuestaoItem({ questoes }: Props) {
   async function loadQuestao() {
     setLoading(true);
     Api.get<Questao>(`questoes/${params.questao_id}`)
-      .then(({ data, status }) => {
-        if (status === 204) {
-          const nextId = list.indexOf(Number(params.questao_id));
-
-          history.push(makeRoute(list[nextId + 1]));
-
-          setList(list.filter((item) => item !== Number(params.questao_id)));
-        } else {
-          setQuestao(data);
-        }
+      .then(({ data }) => {
+        setQuestao(data);
       })
       .catch(() => {
         toast.warning('Ocorreu um erro ao buscar a questão');
@@ -219,26 +213,7 @@ export function QuestaoItem({ questoes }: Props) {
             />
           )}
         </div>
-        <div className='flex items-center gap-1'>
-          {questao &&
-            questao?.respondidas
-              .filter((_, index, arr) => index >= arr.length - 10)
-              .map((respondida) => (
-                <div
-                  key={respondida.id}
-                  className={`${
-                    respondida.acertou ? 'bg-green-500' : 'bg-red-500'
-                  } w-4 h-2 rounded-full cursor-pointer`}></div>
-              ))}
-          {(questao?.respondidas.length || 0) < 10 &&
-            Array(10 - (questao?.respondidas.length || 0))
-              .fill('')
-              .map((_, key) => (
-                <div
-                  key={key}
-                  className={`bg-gray-200 w-4 h-2 rounded-full`}></div>
-              ))}
-        </div>
+        <QuestaoStates respondidas={questao?.respondidas || []} />
         <div className='ml-auto'></div>
         <button
           onClick={() => loadQuestao()}
@@ -252,7 +227,7 @@ export function QuestaoItem({ questoes }: Props) {
               { id: questao?.id },
               (resp: { id: number }) => {
                 if (resp) {
-                  loadQuestao();
+                  remove(current);
                 }
               }
             )
@@ -280,13 +255,12 @@ export function QuestaoItem({ questoes }: Props) {
             openDrawer(Estatisticas, { aula_id: params.aula_id }, () => {})
           }
           className=' text-gray-600 font-bold px-3 h-10 w-32 rounded-full bg-gray-50 hover:bg-gray-100'>
-          {list.indexOf(Number(params.questao_id)) + 1} de {list.length}
+          {items.indexOf(Number(params.questao_id)) + 1} de {items.length}
         </button>
       </div>
       <div className={'min-h-full relative'}>
         {loading && (
           <div className='absolute bg-white inset-0'>
-            {/* <BiLoaderAlt className='text-4xl text-primary-600 animate-spin' /> */}
             <QuestaoSkeleton />
           </div>
         )}
@@ -380,48 +354,20 @@ export function QuestaoItem({ questoes }: Props) {
         </button>
       </div>
 
-      {!(list[list.length - 1] === Number(params.questao_id)) && (
+      {hasNext && (
         <button
-          onClick={() => next(1)}
+          onClick={next}
           className='absolute opacity-95 hover:opacity-100 transform -translate-y-5 w-10 h-10 flex-center rounded-full top-1/2 -right-4 bg-white shadow'>
           <FaChevronRight />
         </button>
       )}
-      {!(list[0] === Number(params.questao_id)) && (
+      {hasPrev && (
         <button
-          onClick={() => next(-1)}
+          onClick={prev}
           className='absolute opacity-95 hover:opacity-100 transform -translate-y-5 w-10 h-10 flex-center rounded-full top-1/2 -left-4 bg-white shadow'>
           <FaChevronLeft />
         </button>
       )}
-    </div>
-  );
-}
-
-function QuestaoSkeleton() {
-  return (
-    <div className='py-5 px-8 flex animate-pulse flex-col gap-1'>
-      <div className='h-6 bg-gray-200 w-1/3 rounded'></div>
-      <div className='h-2'></div>
-      <div className='h-6 bg-gray-200 w-3/4 rounded'></div>
-      <div className='h-6 bg-gray-200 w-2/3 rounded'></div>
-      <div className='h-6 bg-gray-200 w-2/3 rounded'></div>
-      <div className='h-4'></div>
-      <div className='flex gap-3'>
-        <div className='h-10 w-10 bg-gray-200 rounded'></div>
-        <div className="flex-1 flex gap-1 flex-col">
-          <div className='h-4 bg-gray-200 w-1/3 rounded'></div>
-          <div className='h-4 bg-gray-200 w-3/4 rounded'></div>
-        </div>
-      </div>
-      <div className='h-2'></div>
-      <div className='flex gap-3'>
-        <div className='h-10 w-10 bg-gray-200 rounded'></div>
-        <div className="flex-1 flex gap-1 flex-col">
-          <div className='h-4 bg-gray-200 w-1/3 rounded'></div>
-          <div className='h-4 bg-gray-200 w-3/4 rounded'></div>
-        </div>
-      </div>
     </div>
   );
 }

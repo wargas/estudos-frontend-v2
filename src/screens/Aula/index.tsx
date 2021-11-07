@@ -49,7 +49,7 @@ export function AulaDetail() {
               )
             : history.push(`/disciplinas/${params.disciplina_id}`);
         }}
-        title={`${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}`}
+        title={!!aula?.id ? `${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}` : ''}
         subtitle={`${aula?.questoes.length || 0} questões`}>
         {!!aula && <Relogio aula={aula} />}
       </PageHeader>

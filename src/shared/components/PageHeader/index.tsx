@@ -19,7 +19,7 @@ export function PageHeader({
   onBackPress = () => {},
 }: PageHeaderProps) {
   useEffect(() => {
-    document.title = title || '';
+    document.title = title || 'App Estudos';
 
     return () => { document.title = 'App Estudos' }
   }, [title]);

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   FaCalendar, FaChartBar, FaChevronRight, FaCog, FaListAlt, FaLockOpen, FaSearch, FaUserLock
 } from 'react-icons/fa';
@@ -93,6 +94,7 @@ const Sidebar = () => {
         </ul>
         <div className='border-b'></div>
       </div>
+      {/* {JSON.stringify(React.)} */}
       <div className='h-14 border-t cursor-pointer transition-all hover:bg-gray-100 flex items-center border-gray-50'>
         <div className='w-9 h-9 flex mx-2 items-center rounded-full'>
           <img
