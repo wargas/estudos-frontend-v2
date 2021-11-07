@@ -7,6 +7,7 @@ import { EditQuestao } from '../../shared/components/EditQuestoes';
 import { Estatisticas } from '../../shared/components/Estatisticas';
 import { PageHeader } from '../../shared/components/PageHeader';
 import { QuestaoItem } from '../../shared/components/QuestaoItem';
+import { QuestaoStates } from '../../shared/components/QuestaoItem/QuestaoStates';
 import { Relogio } from '../../shared/components/Relogio';
 import { Aula } from '../../shared/interfaces';
 
@@ -116,6 +117,9 @@ export function AulaDetail() {
                     <span className='text-sm text-gray-500'>
                       {questao.texto.substr(0, 100)}...
                     </span>
+                  </div>
+                  <div>
+                    <QuestaoStates respondidas={questao.respondidas} />
                   </div>
                   <div className='text-xs text-gray-50 h-4 flex-center px-2 rounded-full bg-primary-500'>
                     {questao.alternativas.length}
