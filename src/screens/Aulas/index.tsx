@@ -21,6 +21,7 @@ import { InsertAulas } from '../../shared/components/InsertAulas';
 import { PageHeader } from '../../shared/components/PageHeader';
 import { Aula, Disciplina } from '../../shared/interfaces';
 
+
 export function Aulas() {
   const [disciplina, setDisciplina] = useState<Disciplina>();
   const [aulas, setAulas] = useState<Aula[]>([]);
@@ -287,7 +288,7 @@ export function Aulas() {
                 ))}
             </tbody>
           </table>
-          {aulas.length === 0 && (
+          {aulas.length === 0 && status !== 'loading:disciplinas' && (
             <div className='h-32 flex-center'>nenhuma aula cadastrada</div>
           )}
         </>
