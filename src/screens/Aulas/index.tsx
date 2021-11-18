@@ -288,7 +288,7 @@ export function Aulas() {
                 ))}
             </tbody>
           </table>
-          {aulas.length === 0 && status !== 'loading:disciplinas' && (
+          {aulas.length === 0 && status !== 'loading:aulas' && (
             <div className='h-32 flex-center'>nenhuma aula cadastrada</div>
           )}
         </>

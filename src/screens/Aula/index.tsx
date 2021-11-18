@@ -20,7 +20,7 @@ export function AulaDetail() {
   const [aula, setAula] = useState<Aula>();
   const params = useParams<Params>();
   const history = useHistory();
-  const [status, setStatus] = useState('')
+  const [status, setStatus] = useState('');
   const openDrawer = useDrawer();
 
   useEffect(() => {
@@ -28,13 +28,13 @@ export function AulaDetail() {
   }, []);
 
   async function loadAula() {
-    setStatus('loading:aula')
+    setStatus('loading:aula');
     try {
       const { data } = await Api.get<Aula>(`aulas/${params.aula_id}`);
 
       setAula(data);
     } catch (error) {}
-    setStatus('')
+    setStatus('');
   }
 
   return (
@@ -49,7 +49,11 @@ export function AulaDetail() {
               )
             : history.push(`/disciplinas/${params.disciplina_id}`);
         }}
-        title={!!aula?.id ? `${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}` : ''}
+        title={
+          !!aula?.id
+            ? `${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}`
+            : ''
+        }
         subtitle={`${aula?.questoes.length || 0} questões`}>
         {!!aula && <Relogio aula={aula} />}
       </PageHeader>
@@ -94,7 +98,10 @@ export function AulaDetail() {
             </div>
 
             <div>
-              {status === 'loading:aula' && Array(20).fill(1).map((_, i) => <SkeletonQuestao key={i} />)}
+              {status === 'loading:aula' &&
+                Array(20)
+                  .fill(1)
+                  .map((_, i) => <SkeletonQuestao key={i} />)}
               {aula?.questoes.map((questao) => (
                 <div
                   onClick={() =>
@@ -117,9 +124,6 @@ export function AulaDetail() {
                       {questao.texto.substr(0, 100)}...
                     </span>
                   </div>
-                  {/* <div>
-                    <QuestaoStates respondidas={questao.respondidas} />
-                  </div> */}
                   <div className='text-xs text-gray-50 h-4 flex-center px-2 rounded-full bg-primary-500'>
                     {questao.alternativas.length}
                   </div>
@@ -137,14 +141,16 @@ export function AulaDetail() {
 }
 
 function SkeletonQuestao() {
-  return <div className="flex gap-3 px-5 py-3 border-b border-gray-50">
-    <div className="w-10 h-10 rounded-full bg-gray-200"></div>
-    <div className="flex-1 flex flex-col gap-1">
-      <div className="h-4 w-48 bg-gray-200"></div>
-      <div className="h-2 w-96 bg-gray-200"></div>
+  return (
+    <div className='flex gap-3 px-5 py-3 border-b border-gray-50'>
+      <div className='w-10 h-10 rounded-full bg-gray-200'></div>
+      <div className='flex-1 flex flex-col gap-1'>
+        <div className='h-4 w-48 bg-gray-200'></div>
+        <div className='h-2 w-96 bg-gray-200'></div>
+      </div>
+      <div>
+        <div className='h-4 w-6 rounded-full bg-gray-200'></div>
+      </div>
     </div>
-    <div>
-      <div className="h-4 w-6 rounded-full bg-gray-200"></div>
-    </div>
-  </div>
+  );
 }

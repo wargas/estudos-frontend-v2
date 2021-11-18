@@ -11,6 +11,10 @@ export function Markdown({ markdown }: any) {
             component: ListUn,
             props: {},
           },
+          img: {
+            component:Image,
+            props: {}
+          },
         },
       }}>
       {markdown
@@ -22,8 +26,13 @@ export function Markdown({ markdown }: any) {
 }
 
 const ListUn: FC<any> = ({ children, ...props }) => {
-  console.log(children);
   return (
     <li {...props}>{children.map((item: any) => item?.props?.children)}</li>
   );
 };
+
+
+
+const Image = ({children, ...props}: any) => {
+  return <img className="shadow-sm rounded" style={{display: 'inline-block'}} src={props?.src} alt={props?.alt} />
+}
