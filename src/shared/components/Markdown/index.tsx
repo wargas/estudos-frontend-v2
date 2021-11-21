@@ -15,6 +15,14 @@ export function Markdown({ markdown }: any) {
             component:Image,
             props: {}
           },
+          Row: {
+            component: Row,
+            props: {}
+          },
+          Col: {
+            component: Col,
+            props: {}
+          }
         },
       }}>
       {markdown
@@ -35,4 +43,16 @@ const ListUn: FC<any> = ({ children, ...props }) => {
 
 const Image = ({children, ...props}: any) => {
   return <img className="shadow-sm rounded" style={{display: 'inline-block'}} src={props?.src} alt={props?.alt} />
+}
+
+const Row = ({children, ...props}: any) => {
+  return <div className="flex">
+    {children}
+  </div>
+}
+
+const Col = ({children, ...props}: any) => {
+  return <div className="flex-1">
+    {children}
+  </div>
 }
