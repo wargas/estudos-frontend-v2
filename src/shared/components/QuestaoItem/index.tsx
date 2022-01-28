@@ -12,10 +12,14 @@ import {
   FaTimes,
   FaTrash
 } from 'react-icons/fa';
-import { generatePath, useHistory, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
 import Api from '../../Api';
-import { Questao, Respondida } from '../../interfaces';
+import {
+  Comentario as ComentarioInterface,
+  Questao,
+  Respondida
+} from '../../interfaces';
 import { Comentario } from '../Comentario';
 import { DeleteQuestao } from '../DeleteQuestao';
 import { useDrawer } from '../Drawer';
@@ -42,6 +46,7 @@ export function QuestaoItem({ questoes }: Props) {
   const [riscadas, setRiscadas] = useState<string[]>([]);
   const [marcada, setMarcada] = useState('');
   const [respondida, setRespondida] = useState<Respondida>();
+  const [comentario, setComentario] = useState<ComentarioInterface>();
 
   const params = useParams<Params>();
   const history = useHistory();
@@ -56,6 +61,7 @@ export function QuestaoItem({ questoes }: Props) {
 
   useEffect(() => {
     loadQuestao();
+    loadComentario();
     setRiscadas([]);
     setMarcada('');
     if (current.toString() !== params.questao_id) {
@@ -116,16 +122,6 @@ export function QuestaoItem({ questoes }: Props) {
 
       event.preventDefault();
     }
-  }
-
-  function makeRoute(questao_id: number) {
-    return generatePath(
-      '/disciplinas/:disciplina_id/aula/:aula_id/aula/:questao_id',
-      {
-        ...params,
-        questao_id,
-      }
-    );
   }
 
   function handlerRiscadas(letra: string) {
@@ -197,6 +193,14 @@ export function QuestaoItem({ questoes }: Props) {
       .finally(() => {
         setLoadingResponder(false);
       });
+  }
+
+  async function loadComentario() {
+    const { data } = await Api.get<ComentarioInterface>(
+      `comentarios/${params.questao_id}`
+    );
+
+    setComentario(data);
   }
 
   return (
@@ -346,12 +350,25 @@ export function QuestaoItem({ questoes }: Props) {
           <span> Responder</span>
         </button>
         <div className='ml-auto'></div>
-        <button
-          onClick={() => openDrawer(Comentario, { id: questao?.id })}
-          className='text-white flex gap-3 flex-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5'>
-          <FaComment />
-          <span> Comentários</span>
-        </button>
+      </div>
+
+      <div style={{minHeight: 150}} className='p-5 border-t flex flex-col'>
+        <h1 className='text-2xl mb-3 text-gray-700'>Comentário</h1>
+        {comentario?.texto ? (
+          <div style={{ filter: !!respondida ? 'blur(0px)' : 'blur(5px)' }}>
+            <Markdown markdown={comentario.texto} />
+          </div>
+        ) : (
+          <div className='text-gray-300'>Sem comentário</div>
+        )}
+        <div className='flex pt-5 mt-auto'>
+          <button
+            onClick={() => openDrawer(Comentario, { id: questao?.id }, loadComentario)}
+            className='text-white ml-auto  flex gap-3 flex-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5'>
+            <FaComment />
+            <span>Editar</span>
+          </button>
+        </div>
       </div>
 
       {hasNext && (

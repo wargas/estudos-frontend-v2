@@ -1,10 +1,15 @@
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { FaCheck, FaChevronLeft, FaEdit } from 'react-icons/fa';
+import {
+  FaCheck,
+  FaChevronLeft,
+  FaEdit,
+  FaEnvelopeOpenText
+} from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Api from '../../Api';
-import { Comentario as IComentario } from '../../interfaces';
+import { Comentario as IComentario, Questao } from '../../interfaces';
 import { ComponentProps } from '../Drawer';
 import { Markdown } from '../Markdown';
 
@@ -13,8 +18,8 @@ export function Comentario({
   setWidth,
   closeDrawer = () => {},
 }: ComponentProps) {
-  const [comentario, setComentario] = useState<IComentario>();
-  const [allowEdit, setAllowEdit] = useState(false);
+  const [comentario, setComentario] = useState<IComentario>({} as IComentario);
+  const [allowEdit, setAllowEdit] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,6 +36,16 @@ export function Comentario({
       });
   }
 
+  async function loadQuestao() {
+    const response = await Api.get<Questao>(`questoes/${data.id}`)
+
+    const questao = response.data
+
+    const texto = `${comentario.texto}\n\n${questao.texto}\n\n${questao.alternativas.map(alt => `${alt.letra}) ${alt.conteudo}`).join('\n\n')}`
+
+    setComentario({...comentario, texto})
+  }
+
   async function saveComentario() {
     setLoading(true);
     Api.post<any, AxiosResponse<IComentario>>(`comentarios/${data.id}`, {
@@ -42,7 +57,7 @@ export function Comentario({
         toast.success('O comentário está salvo!');
       })
       .catch(() => {
-          toast.error('Erro ao salvar o comentário')
+        toast.error('Erro ao salvar o comentário');
       })
       .finally(() => setLoading(false));
   }
@@ -78,6 +93,12 @@ export function Comentario({
         )}
       </div>
       <div className='flex bg-gray-50 items-center h-14 border-t px-5 gap-2'>
+        <button
+          onClick={loadQuestao}
+          className='border flex items-center gap-2 text-sm h-9 text-primary-600 shadow-sm px-5 rounded-full'>
+          <FaEnvelopeOpenText />
+          <span>Enunciado</span>
+        </button>
         <div className='ml-auto'></div>
         {!allowEdit && (
           <button

@@ -102,7 +102,7 @@ export function AulaDetail() {
                 Array(20)
                   .fill(1)
                   .map((_, i) => <SkeletonQuestao key={i} />)}
-              {aula?.questoes.map((questao) => (
+              {aula?.questoes.map((questao, index) => (
                 <div
                   onClick={() =>
                     history.push(`${questao.aula_id}/questao/${questao.id}`)
@@ -119,7 +119,7 @@ export function AulaDetail() {
                     />
                   </div>
                   <div className='flex-1'>
-                    <b>{questao.header}</b> <br />
+                    <b>{index + 1}. {questao.header}</b> <br />
                     <span className='text-sm text-gray-500'>
                       {questao.texto.substr(0, 100)}...
                     </span>

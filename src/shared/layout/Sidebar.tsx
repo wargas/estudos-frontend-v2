@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   FaCalendar, FaChartBar, FaChevronRight, FaCog, FaListAlt, FaLockOpen, FaSearch, FaUserLock
 } from 'react-icons/fa';
@@ -16,7 +15,7 @@ const Sidebar = () => {
   return (
     <div className='absolute flex flex-col left-0 top-0 bottom-0 w-64 shadow bg-white'>
       <div className='h-14 flex bg-primary-600 shadow items-center justify-center'>
-        <h1 className='text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-50 to-primary-300'>
+        <h1 className='text-2xl font-bold cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-primary-50 to-primary-300'>
           APPESTUDOS
         </h1>
       </div>
