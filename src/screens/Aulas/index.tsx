@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import qs from 'query-string';
 import { useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
@@ -20,7 +20,6 @@ import { EditQuestao } from '../../shared/components/EditQuestoes';
 import { InsertAulas } from '../../shared/components/InsertAulas';
 import { PageHeader } from '../../shared/components/PageHeader';
 import { Aula, Disciplina } from '../../shared/interfaces';
-
 
 export function Aulas() {
   const [disciplina, setDisciplina] = useState<Disciplina>();
@@ -85,7 +84,7 @@ export function Aulas() {
           if (aula.id === data.id) {
             const meta = { questoes_count: data?.questoes?.length || 0 };
 
-            console.log(meta)
+            console.log(meta);
 
             return { ...data, meta, days: aula.days } as Aula;
           }
@@ -161,7 +160,14 @@ export function Aulas() {
           </div>
         </div>
         <>
-          <table className={`${aulas.length === 0 && 'hidden'} w-full`}>
+          <table style={{tableLayout: 'fixed'}} className={`${aulas.length === 0 && 'hidden'} w-full`}>
+            <colgroup>
+              <col span={1} width="65%"></col>
+              <col span={1} width="10%"></col>
+              <col span={1} width="10%"></col>
+              <col span={1} width="10%"></col>
+              <col span={1} width="5%"></col>
+            </colgroup>
             <thead>
               <tr className='text-left cursor-pointer h-14 text-base bg-white text-primary-600 border-b border-t'>
                 <th onClick={() => updateOrderBy('ordem')} className='pl-3'>
@@ -177,7 +183,7 @@ export function Aulas() {
                       )}
                   </div>
                 </th>
-                <th onClick={() => updateOrderBy('last')} className=''>
+                <th  onClick={() => updateOrderBy('last')} className=''>
                   <div className='flex items-center gap-3'>
                     <div>ÚLTIMA</div>{' '}
                     {orderBy.startsWith('last:') &&
@@ -190,6 +196,7 @@ export function Aulas() {
                       )}
                   </div>
                 </th>
+                <th className='text-left'>TEMPO</th>
                 <th onClick={() => updateOrderBy('nota')} className=''>
                   <div className='flex items-center gap-3'>
                     <div>NOTA</div>{' '}
@@ -223,18 +230,18 @@ export function Aulas() {
                           `/disciplinas/${aula?.disciplina_id}/aula/${aula.id}`
                         )
                       }
-                      className='pl-3 cursor-pointer h-14 flex items-center'>
-                      <div className='mr-3 w-10 h-10 bg-primary-600 rounded-full text-white flex items-center justify-center'>
+                      className='px-3 overflow-hidden cursor-pointer h-14 flex items-center'>
+                      <div style={{minWidth: '2.5rem'}} className='mr-3 w-10 h-10 bg-primary-600 rounded-full text-white flex items-center justify-center'>
                         {String(aula.ordem).padStart(2, '0')}
                       </div>
-                      <div className='flex-1'>
-                        <h1 className='max-w-lg truncate'>{aula.name} </h1>
-                        <p className='text-gray-400 flex items-center gap-2 text-sm'>
-                          {aula.meta.questoes_count} questoes
-                          {status === `loading:${aula.id}` && (
-                            <BiLoaderAlt className='animate-spin' />
-                          )}
-                        </p>
+                      <div className='overflow-hidden mr-4'>
+                          <h1 className='truncate'>{aula.name} </h1>
+                          <p className='text-gray-400 flex items-center gap-2 text-sm'>
+                            {aula.meta.questoes_count} questoes
+                            {status === `loading:${aula.id}` && (
+                              <BiLoaderAlt className='animate-spin' />
+                            )}
+                          </p>
                       </div>
                     </td>
                     <td className='text-gray-500 text-sm'>
@@ -242,11 +249,19 @@ export function Aulas() {
                         DateTime.fromSQL(aula.last.data).toFormat('dd/MM/yyyy')}
                     </td>
                     <td className='text-gray-500 text-sm'>
+                      {!aula.last
+                        ? ''
+                        : Duration.fromMillis(aula.last.tempo * 1000).toFormat(
+                            'hh:mm:ss'
+                          )}
+                    </td>
+                    <td className='text-gray-500 text-sm'>
                       {aula.last &&
+                        aula?.last?.acertos > 0 &&
                         ((aula.last.acertos / aula.last.total) * 100)
                           .toFixed(1)
                           .replace('.', ',')}
-                      {aula.last ? '%' : 'nunca'}
+                      {aula.last && aula?.last?.acertos > 0 ? '%' : ''}
                     </td>
                     <td className=''>
                       <Menu as='div' className='relative'>

@@ -38,7 +38,8 @@ export type Aula = {
             acertos: number,
             erros: number,
             total: number,
-            last: boolean
+            last: boolean,
+            tempo: number
         }
     ]
 }
