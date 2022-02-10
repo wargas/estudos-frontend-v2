@@ -53,8 +53,8 @@ export function PageHeader({
           <FaChevronLeft />
         </button>
       )}
-      <div>
-        <h1 className='text-2xl'>{title || '-'}</h1>
+      <div className='overflow-hidden mr-3'>
+        <h1 title={title} className='text-xl truncate'>{title || '-'}</h1>
         {subtitle && <p className='text-gray-400 text-sm'>{subtitle}</p>}
       </div>
       <div className='flex ml-auto'>{children}</div>
