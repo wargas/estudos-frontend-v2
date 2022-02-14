@@ -1,7 +1,7 @@
 import { Menu } from '@headlessui/react';
 import { DateTime, Duration } from 'luxon';
 import qs from 'query-string';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 import {
   FaChevronDown,
@@ -13,6 +13,7 @@ import {
   FaSync
 } from 'react-icons/fa';
 import { IoMdMore } from 'react-icons/io';
+import { useQuery, useQueryClient } from 'react-query';
 import { useHistory, useParams } from 'react-router';
 import Api from '../../shared/Api';
 import { useDrawer } from '../../shared/components/Drawer';
@@ -22,46 +23,41 @@ import { PageHeader } from '../../shared/components/PageHeader';
 import { Aula, Disciplina } from '../../shared/interfaces';
 
 export function Aulas() {
-  const [disciplina, setDisciplina] = useState<Disciplina>();
-  const [aulas, setAulas] = useState<Aula[]>([]);
-  const [status, setStatus] = useState('');
   const [orderBy, setOrderBy] = useState('ordem:asc');
 
   const { id = null } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    loadDisciplina();
-  }, []);
+  const { data: disciplina } = useQuery<Disciplina>(
+    ['disciplina', id],
+    loadDisciplina
+  );
 
-  useEffect(() => {
-    loadAulas();
-  }, [orderBy]);
+  const { data: aulas, status } = useQuery<Aula[]>(['aulas', orderBy, disciplina?.id], loadAulas, {
+    enabled: !!disciplina?.id,
+    initialData: []
+  })
+
+  const queryClient = useQueryClient()
 
   const openDrawer = useDrawer();
 
   const history = useHistory();
 
   async function loadDisciplina() {
-    try {
-      const { data } = await Api.get(`/disciplinas/${id}`);
+    const { data } = await Api.get(`/disciplinas/${id}`);
 
-      setDisciplina(data);
-    } catch (error) {}
+    return data;
   }
 
   async function loadAulas() {
-    setStatus('loading:aulas');
-    try {
-      const { data } = await Api.get(
-        `/aulas?${qs.stringify({
-          order_by: orderBy,
-          disciplina_id: id,
-        })}`
-      );
-      setAulas(data);
-    } catch (error) {}
+    const { data } = await Api.get(
+      `/aulas?${qs.stringify({
+        order_by: orderBy,
+        disciplina_id: id,
+      })}`
+    );
 
-    setStatus('');
+    return data;
   }
 
   function updateOrderBy(_coluna: string) {
@@ -74,31 +70,10 @@ export function Aulas() {
     }
   }
 
-  async function updateAula(aula_id: number) {
-    setStatus(`loading:${aula_id}`);
-    try {
-      const { data } = await Api.get<Aula>(`aulas/${aula_id}`);
-
-      setAulas(
-        aulas.map((aula) => {
-          if (aula.id === data.id) {
-            const meta = { questoes_count: data?.questoes?.length || 0 };
-
-            console.log(meta);
-
-            return { ...data, meta, days: aula.days } as Aula;
-          }
-          return aula;
-        })
-      );
-    } catch (error) {}
-
-    setStatus('');
-  }
-
+  
   function handlerUpdateQuestoes(retorno: any, aula_id: number) {
     if (retorno) {
-      updateAula(aula_id);
+      queryClient.invalidateQueries(['aulas', 'disciplinas'])
     }
   }
 
@@ -106,12 +81,12 @@ export function Aulas() {
     <div className=''>
       {disciplina && (
         <PageHeader
-          isLoading={status === 'loading:aulas'}
+          isLoading={status === 'loading'}
           onBackPress={() => history.push('/disciplinas')}
           backButton
           title={`${disciplina?.name || ''}`}>
           <button
-            onClick={() => loadAulas()}
+            onClick={() => queryClient.invalidateQueries('aulas')}
             className='text-primary-600 bg-white hover:shadow-sm border gap-2 h-8 px-5 rounded-full flex-center'>
             <FaSync className='text-sm' />
           </button>
@@ -140,11 +115,11 @@ export function Aulas() {
       <div className='bg-white shadow-sm overflow-hidden rounded'>
         <div className='p-5 flex items-center border-b border-gray-100'>
           <div>
-            {status === 'loading:aulas' ? (
+            {status === 'loading' ? (
               <h1 className='bg-gray-200 rounded-full animate-pulse h-4 w-48'></h1>
             ) : (
               <h1 className='text-gray-600'>
-                {aulas.length} aulas encontradas
+                {aulas?.length || 0} aulas encontradas
               </h1>
             )}
           </div>
@@ -160,13 +135,15 @@ export function Aulas() {
           </div>
         </div>
         <>
-          <table style={{tableLayout: 'fixed'}} className={`${aulas.length === 0 && 'hidden'} w-full`}>
+          <table
+            style={{ tableLayout: 'fixed' }}
+            className={`${aulas?.length === 0 && 'hidden'} w-full`}>
             <colgroup>
-              <col span={1} width="65%"></col>
-              <col span={1} width="10%"></col>
-              <col span={1} width="10%"></col>
-              <col span={1} width="10%"></col>
-              <col span={1} width="5%"></col>
+              <col span={1} width='65%'></col>
+              <col span={1} width='10%'></col>
+              <col span={1} width='10%'></col>
+              <col span={1} width='10%'></col>
+              <col span={1} width='5%'></col>
             </colgroup>
             <thead>
               <tr className='text-left cursor-pointer h-14 text-base bg-white text-primary-600 border-b border-t'>
@@ -183,7 +160,7 @@ export function Aulas() {
                       )}
                   </div>
                 </th>
-                <th  onClick={() => updateOrderBy('last')} className=''>
+                <th onClick={() => updateOrderBy('last')} className=''>
                   <div className='flex items-center gap-3'>
                     <div>ÚLTIMA</div>{' '}
                     {orderBy.startsWith('last:') &&
@@ -215,7 +192,7 @@ export function Aulas() {
             </thead>
             <tbody>
               {aulas
-                .map((aula) => {
+                ?.map((aula) => {
                   const last = aula.days.find((item) => item.last);
 
                   return { ...aula, last };
@@ -231,17 +208,19 @@ export function Aulas() {
                         )
                       }
                       className='px-3 overflow-hidden cursor-pointer h-14 flex items-center'>
-                      <div style={{minWidth: '2.5rem'}} className='mr-3 w-10 h-10 bg-primary-600 rounded-full text-white flex items-center justify-center'>
+                      <div
+                        style={{ minWidth: '2.5rem' }}
+                        className='mr-3 w-10 h-10 bg-primary-600 rounded-full text-white flex items-center justify-center'>
                         {String(aula.ordem).padStart(2, '0')}
                       </div>
                       <div className='overflow-hidden mr-4'>
-                          <h1 className='truncate'>{aula.name} </h1>
-                          <p className='text-gray-400 flex items-center gap-2 text-sm'>
-                            {aula.meta.questoes_count} questoes
-                            {status === `loading:${aula.id}` && (
-                              <BiLoaderAlt className='animate-spin' />
-                            )}
-                          </p>
+                        <h1 className='truncate'>{aula.name} </h1>
+                        <p className='text-gray-400 flex items-center gap-2 text-sm'>
+                          {aula.meta.questoes_count} questoes
+                          {status === `loading:${aula.id}` && (
+                            <BiLoaderAlt className='animate-spin' />
+                          )}
+                        </p>
                       </div>
                     </td>
                     <td className='text-gray-500 text-sm'>
@@ -284,7 +263,7 @@ export function Aulas() {
                               <span> Editar Questões</span>
                             </div>
                           </Menu.Item>
-                          <Menu.Item onClick={() => updateAula(aula.id)}>
+                          <Menu.Item onClick={() => queryClient.invalidateQueries('aulas')}>
                             <div className='flex items-center gap-2 px-3 py-3 cursor-pointer hover:bg-gray-50 text-gray-700'>
                               <FaEdit />
                               <span> Editar Aula</span>
@@ -303,7 +282,7 @@ export function Aulas() {
                 ))}
             </tbody>
           </table>
-          {aulas.length === 0 && status !== 'loading:aulas' && (
+          {aulas?.length === 0 && status !== 'loading' && (
             <div className='h-32 flex-center'>nenhuma aula cadastrada</div>
           )}
         </>
