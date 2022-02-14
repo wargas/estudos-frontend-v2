@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { HashRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +10,7 @@ import { DrawerProvider } from './shared/components/Drawer';
 import { ModalProvider } from './shared/components/Modal';
 
 
+const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
@@ -20,20 +22,22 @@ function App() {
   }, []);
 
   return (
-    <HashRouter>
-      <AuthProvider>
-        <ModalProvider>
-          <DrawerProvider>
-            <ToastContainer
-              position='bottom-right'
-              autoClose={2000}
-              theme='light'
-            />
-            <Routes />
-          </DrawerProvider>
-        </ModalProvider>
-      </AuthProvider>
-    </HashRouter>
+    <QueryClientProvider client={queryClient}>
+      <HashRouter>
+        <AuthProvider>
+          <ModalProvider>
+            <DrawerProvider>
+              <ToastContainer
+                position='bottom-right'
+                autoClose={2000}
+                theme='light'
+              />
+              <Routes />
+            </DrawerProvider>
+          </ModalProvider>
+        </AuthProvider>
+      </HashRouter>
+    </QueryClientProvider>
   );
 }
 

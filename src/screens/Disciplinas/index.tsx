@@ -10,11 +10,13 @@ import {
   FaTrash
 } from 'react-icons/fa';
 import { IoMdMore } from 'react-icons/io';
+import { useQuery, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router';
-import useSWR from 'swr';
-import { fetcher } from '../../shared/Api';
+import Api from '../../shared/Api';
+import { useDrawer } from '../../shared/components/Drawer';
 import { PageHeader } from '../../shared/components/PageHeader';
 import { Disciplina } from '../../shared/interfaces';
+import FormDisciplina from './FormDisciplina';
 
 export function Disciplinas() {
   const [loading] = useState(false);
@@ -22,10 +24,27 @@ export function Disciplinas() {
 
   const history = useHistory();
 
-  const { data: disciplinas } = useSWR<Disciplina[], any>(
-    `/disciplinas?countQuestoes=true&countAulas=true&search=${search}`,
-    fetcher
-  );
+  const openDrawer = useDrawer();
+
+  const queryClient = useQueryClient()
+
+  const { data: disciplinas } = useQuery<Disciplina[]>(['disciplinas', search], loadDisciplinas, {
+    initialData: []
+  });
+
+  async function loadDisciplinas() {
+    const { data } = await Api.get(
+      `/disciplinas?countQuestoes=true&countAulas=true&search=${search}`
+    );
+
+    return data;
+  }
+
+  async function handlerCloseDrawer(ok: boolean) {
+    if(ok) {
+      queryClient.invalidateQueries('disciplinas')
+    }
+  }
 
   return (
     <div>
@@ -40,7 +59,9 @@ export function Disciplinas() {
           <FaSync />
           <span>Atualizar</span>
         </button>
-        <button className='text-primary-600 border bg-white shadow-sm h-8 px-5 rounded-full flex items-center gap-3'>
+        <button
+          onClick={() => openDrawer(FormDisciplina, {}, handlerCloseDrawer)}
+          className='text-primary-600 border bg-white shadow-sm h-8 px-5 rounded-full flex items-center gap-3'>
           <FaPlus />
           <span>Cadastrar</span>
         </button>
