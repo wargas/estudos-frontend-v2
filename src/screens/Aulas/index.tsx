@@ -17,7 +17,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import { useHistory, useParams } from 'react-router';
 import Api from '../../shared/Api';
 import { useDrawer } from '../../shared/components/Drawer';
-import { EditQuestao } from '../../shared/components/EditQuestoes';
+import { EditQuestoes } from '../../shared/components/EditQuestoes';
 import { InsertAulas } from '../../shared/components/InsertAulas';
 import { PageHeader } from '../../shared/components/PageHeader';
 import { Aula, Disciplina } from '../../shared/interfaces';
@@ -253,7 +253,7 @@ export function Aulas() {
                           <Menu.Item
                             onClick={() =>
                               openDrawer(
-                                EditQuestao,
+                                EditQuestoes,
                                 { aula_id: aula.id },
                                 (ret) => handlerUpdateQuestoes(ret, aula.id)
                               )

@@ -43,7 +43,7 @@ export function getBancaName(enunciado: string): string {
     return match?.name || ''
 }
 
-export function QuestoesToMarkdown(questoes: Questao[]): string {
+export function QuestoesToMarkdown(questoes: Questao[], showGabarito = true): string {
 
     return questoes
         .map((questao) => {
@@ -55,7 +55,7 @@ export function QuestoesToMarkdown(questoes: Questao[]): string {
 
             const _head = `[ID: ${questao.id}]`;
 
-            return `${_head}${questao.enunciado}\n***\n${alternativas}\n***\n${questao.gabarito}`;
+            return `${_head}${questao.enunciado}\n***\n${alternativas}${showGabarito ? `\n***\n ${questao.gabarito}` : ''}`;
         })
         .join(`\n****\n`)
 }

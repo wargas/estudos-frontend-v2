@@ -1,38 +1,40 @@
 import axios from 'axios';
-import qs from 'query-string';
 import { ClipboardEvent, useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { FaChevronLeft } from 'react-icons/fa';
+import { FaChevronLeft, FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Api from '../../Api';
 import { QuestoesToMarkdown } from '../../Helpers';
 import { Questao } from '../../interfaces';
 import { ComponentProps } from '../Drawer';
 
-export function EditQuestoes({
+export function EditQuestao({
   data,
   closeDrawer = () => {},
   setWidth,
 }: ComponentProps) {
-  const [questoes, setQuestoes] = useState<Questao[]>([]);
+  const [questao, setQuestao] = useState<Questao>();
+  const [gabarito, setGabarito] = useState('');
+  const [showGabarito, setShowGabarito] = useState(false);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (questoes) {
-      setText(QuestoesToMarkdown(questoes, true));
+    if (questao) {
+      setText(QuestoesToMarkdown([questao], false));
+      setGabarito(questao.gabarito);
     }
-  }, [questoes]);
+  }, [questao]);
 
   useEffect(() => {
     setWidth('1/2');
-    loadQuestoes();
+    loadQuestao();
   }, []);
 
-  async function loadQuestoes() {
+  async function loadQuestao() {
     setLoading(true);
-    Api.get<Questao[]>(`questoes?${qs.stringify(data)}`)
-      .then(({ data }) => setQuestoes(data))
+    Api.get<Questao>(`questoes/${data.id}`)
+      .then(({ data }) => setQuestao(data))
       .finally(() => setLoading(false));
   }
 
@@ -40,7 +42,7 @@ export function EditQuestoes({
     setLoading(true);
     Api.post(`questoes/editar-lote`, {
       aula_id: data.aula_id,
-      markdown: text,
+      markdown: `${text}\n***\n${gabarito}`,
     })
       .then(({ data }) => {
         toast.success(`Dados da questão alterados`);
@@ -70,11 +72,14 @@ export function EditQuestoes({
       const parte1 = value.substr(0, selectionStart);
       const parte2 = value.substr(selectionEnd);
 
-      const imgTag = `![${data.data.title}](${data.data.url})`
+      const imgTag = `![${data.data.title}](${data.data.url})`;
 
       setText(`${parte1}${imgTag}${parte2}`);
 
-      target.setSelectionRange(selectionStart + imgTag.length, selectionStart + imgTag.length);
+      target.setSelectionRange(
+        selectionStart + imgTag.length,
+        selectionStart + imgTag.length
+      );
       ev.preventDefault();
     }
   }
@@ -87,7 +92,7 @@ export function EditQuestoes({
           className='text-white px-5 flex'>
           <FaChevronLeft />
         </button>
-        <h1 className='text-white'>Editar Questão</h1>
+        <h1 className='text-white'>Editar Questão Única</h1>
       </div>
       <div className='flex flex-col flex-1 relative'>
         {loading && (
@@ -103,6 +108,23 @@ export function EditQuestoes({
         />
 
         <div className='flex justify-between pb-3 px-5'>
+          <div className='bg-primary-100 rounded-full flex items-center px-5'>
+            <span className='text-gray-400 mr-4'>Gabarito:</span>
+
+            <input
+              disabled={!showGabarito}
+              type={showGabarito ? 'text' : 'password'}
+              onChange={(e) => setGabarito(String(e.target.value).toUpperCase()[0])}
+              className='bg-transparent w-10 focus:outline-none'
+              value={gabarito}
+            />
+            <button>
+              <FaEye
+                onClick={() => setShowGabarito(!showGabarito)}
+                className='text-gray-600 mr-4'
+              />
+            </button>
+          </div>
           <button
             onClick={handlerSalvar}
             className='bg-primary-600 ml-auto h-9 px-5 text-white rounded-full'>

@@ -3,7 +3,7 @@ import { FaChartBar, FaCheck, FaEdit, FaSync } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router';
 import Api from '../../shared/Api';
 import { useDrawer } from '../../shared/components/Drawer';
-import { EditQuestao } from '../../shared/components/EditQuestoes';
+import { EditQuestoes } from '../../shared/components/EditQuestoes';
 import { Estatisticas } from '../../shared/components/Estatisticas';
 import { PageHeader } from '../../shared/components/PageHeader';
 import { QuestaoItem } from '../../shared/components/QuestaoItem';
@@ -70,7 +70,7 @@ export function AulaDetail() {
               </button>
               <button
                 onClick={() =>
-                  openDrawer(EditQuestao, { aula_id: aula?.id }, (result) => {
+                  openDrawer(EditQuestoes, { aula_id: aula?.id }, (result) => {
                     if (result) {
                       loadAula();
                     }
