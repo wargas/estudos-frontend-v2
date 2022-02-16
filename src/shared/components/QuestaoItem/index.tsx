@@ -10,7 +10,8 @@ import {
   FaEdit,
   FaSync,
   FaTimes,
-  FaTrash
+  FaTrash,
+  FaUndo
 } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -203,6 +204,19 @@ export function QuestaoItem({ questoes }: Props) {
     setComentario(data);
   }
 
+  async function deleteRespondida() {
+    const item = questao?.respondidas.find((q) =>
+      DateTime.fromISO(q.horario).hasSame(DateTime.local(), 'day')
+    );
+
+    if (item) {
+      try {
+        await Api.delete(`respondidas/${item.id}`);
+        loadQuestao();
+      } catch (error) {}
+    }
+  }
+
   return (
     <div className='bg-white rounded shadow-sm relative'>
       <div className='flex items-center border-b h-16 px-5'>
@@ -218,6 +232,13 @@ export function QuestaoItem({ questoes }: Props) {
           )}
         </div>
         <QuestaoStates respondidas={questao?.respondidas || []} />
+        {respondida && (
+          <button
+            onClick={deleteRespondida}
+            className='hover:bg-gray-100 ml-4 text-gray-600 transition-all w-10 h-10 flex-center rounded-full'>
+            <FaUndo />
+          </button>
+        )}
         <div className='ml-auto'></div>
         <button
           onClick={() => loadQuestao()}
@@ -352,7 +373,7 @@ export function QuestaoItem({ questoes }: Props) {
         <div className='ml-auto'></div>
       </div>
 
-      <div style={{minHeight: 150}} className='p-5 border-t flex flex-col'>
+      <div style={{ minHeight: 150 }} className='p-5 border-t flex flex-col'>
         <h1 className='text-2xl mb-3 text-gray-700'>Comentário</h1>
         {comentario?.texto ? (
           <div style={{ filter: !!respondida ? 'blur(0px)' : 'blur(5px)' }}>
@@ -363,7 +384,9 @@ export function QuestaoItem({ questoes }: Props) {
         )}
         <div className='flex pt-5 mt-auto'>
           <button
-            onClick={() => openDrawer(Comentario, { id: questao?.id }, loadComentario)}
+            onClick={() =>
+              openDrawer(Comentario, { id: questao?.id }, loadComentario)
+            }
             className='text-white ml-auto  flex gap-3 flex-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5'>
             <FaComment />
             <span>Editar</span>
