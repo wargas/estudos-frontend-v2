@@ -27,14 +27,13 @@ export function Aulas() {
 
   const { id = null } = useParams<{ id: string }>();
 
-  const { data: disciplina } = useQuery<Disciplina>(
+  const { data: disciplina, isLoading: isLoadingDisciplina } = useQuery<Disciplina>(
     ['disciplina', id],
     loadDisciplina
   );
 
   const { data: aulas, status } = useQuery<Aula[]>(['aulas', orderBy, disciplina?.id], loadAulas, {
-    enabled: !!disciplina?.id,
-    initialData: []
+    enabled: !!disciplina?.id
   })
 
   const queryClient = useQueryClient()
@@ -79,9 +78,10 @@ export function Aulas() {
 
   return (
     <div className=''>
+
       {disciplina && (
         <PageHeader
-          isLoading={status === 'loading'}
+          isLoading={isLoadingDisciplina}
           onBackPress={() => history.push('/disciplinas')}
           backButton
           title={`${disciplina?.name || ''}`}>

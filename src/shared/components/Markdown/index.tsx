@@ -1,5 +1,8 @@
+import 'katex/dist/katex.min.css';
 import MarkdownToJSX from 'markdown-to-jsx';
 import { FC } from 'react';
+import Latex from 'react-latex-next';
+
 
 export function Markdown({ markdown }: any) {
   return (
@@ -22,11 +25,16 @@ export function Markdown({ markdown }: any) {
           Col: {
             component: Col,
             props: {}
+          },
+          Latex: {
+            component: FormulaInline,
+            props: {}
           }
         },
       }}>
       {markdown
         .split('\n')
+        .map((line: string) => line.replace(/\$(.*)\$/g, "<Latex>$ $1 $</Latex>"))
         .map((item: string) => `${item.startsWith('|') ? '' : '\n' }${item}\n`)
         .join('')}
     </MarkdownToJSX>
@@ -55,4 +63,11 @@ const Col = ({children, ...props}: any) => {
   return <div className="flex-1">
     {children}
   </div>
+}
+
+const FormulaInline = ({children, ...props}: any) => {
+
+  return children.map((child: any) => (
+    <Latex key={child}>{child}</Latex>
+  )) 
 }
