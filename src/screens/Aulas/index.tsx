@@ -70,9 +70,9 @@ export function Aulas() {
   }
 
   
-  function handlerUpdateQuestoes(retorno: any, aula_id: number) {
+  async function handlerUpdateQuestoes(retorno: any, aula_id: number) {
     if (retorno) {
-      queryClient.invalidateQueries(['aulas', 'disciplinas'])
+     await queryClient.invalidateQueries('aulas')
     }
   }
 

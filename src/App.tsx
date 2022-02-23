@@ -26,7 +26,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen />
       <HashRouter>
-        <AuthProvider>
+        <AuthProvider> 
           <ModalProvider>
             <DrawerProvider>
               <ToastContainer

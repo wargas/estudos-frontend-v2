@@ -30,7 +30,7 @@ export type Aula = {
     respondidas: Respondida[],
     questoes: Questao[]
     meta: {
-        questoes_count: 58
+        questoes_count: number
     }
     days: [
         {

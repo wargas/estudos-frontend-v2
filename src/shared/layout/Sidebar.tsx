@@ -1,5 +1,5 @@
 import {
-  FaCalendar, FaChartBar, FaChevronRight, FaCog, FaListAlt, FaLockOpen, FaSearch, FaUserLock
+  FaCalendar, FaChartBar, FaChevronRight, FaCog, FaExclamation, FaListAlt, FaLockOpen, FaSearch, FaUserLock
 } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../auth';
@@ -16,7 +16,7 @@ const Sidebar = () => {
     <div className='absolute flex flex-col left-0 top-0 bottom-0 w-64 shadow bg-white'>
       <div className='h-14 flex bg-primary-600 shadow items-center justify-center'>
         <h1 className='text-2xl font-bold cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-primary-50 to-primary-300'>
-          APPESTUDOS
+          <NavLink to="/">APPESTUDOS</NavLink>
         </h1>
       </div>
       <div className='flex-1 scroll overflow-y-auto'>
@@ -88,6 +88,12 @@ const Sidebar = () => {
               >
               <FaLockOpen className='mr-3' />
               <span>Sair</span>
+            </button>
+          </li>
+          <li className='flex  px-2 my-1'>
+            <button className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
+              <FaExclamation className='mr-3' />
+              <span>Versão: <span className='text-gray-300'> 22.02.23.1 </span></span>
             </button>
           </li>
         </ul>

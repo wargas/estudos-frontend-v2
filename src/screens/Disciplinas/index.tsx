@@ -46,6 +46,10 @@ export function Disciplinas() {
     }
   }
 
+  async function handlerEdit(disciplina: Disciplina) {
+    console.log(disciplina)
+  }
+
   return (
     <div>
       {}
@@ -79,7 +83,6 @@ export function Disciplinas() {
               placeholder='Pesquisa disciplina'
             />
             <button
-              // onClick={() => loadDisciplinas()}
               className='px-5 rounded-r-lg bg-primary-600 text-white'>
               <FaSearch />
             </button>
@@ -126,7 +129,7 @@ export function Disciplinas() {
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className='flex items-center text-gray-600 px-5 p-3 w-full text-left hover:bg-gray-100 border-b border-gray-50'>
+                  <button onClick={() => handlerEdit(disciplina)} className='flex items-center text-gray-600 px-5 p-3 w-full text-left hover:bg-gray-100 border-b border-gray-50'>
                     <FaEdit className='mr-5 text-sm' />
                     <span> Editar</span>
                   </button>

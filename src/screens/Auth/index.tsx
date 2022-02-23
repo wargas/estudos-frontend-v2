@@ -12,8 +12,8 @@ export function Auth() {
 
   const { handleSubmit, handleChange, values } = useFormik({
     initialValues: {
-      email: 'teixeira.wargas@gmail.com',
-      password: '123456',
+      email: '',
+      password: '',
     },
     onSubmit: async (values) => {
       setLoading(true);
