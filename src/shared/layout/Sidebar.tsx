@@ -93,7 +93,7 @@ const Sidebar = () => {
           <li className='flex  px-2 my-1'>
             <button className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
               <FaExclamation className='mr-3' />
-              <span>Versão: <span className='text-gray-300'> 22.02.23.1 </span></span>
+              <span>Versão: <span className='text-gray-300'> 22.02.23.2 </span></span>
             </button>
           </li>
         </ul>

@@ -34,7 +34,7 @@ export function Markdown({ markdown }: any) {
       }}>
       {markdown
         .split('\n')
-        .map((line: string) => line.replace(/\$(.*)\$/g, "<Latex>$ $1 $</Latex>"))
+        .map((line: string) => line.replace(/\$\$(.*)\$\$/g, "<Latex>$ $1 $</Latex>"))
         .map((item: string) => `${item.startsWith('|') ? '' : '\n' }${item}\n`)
         .join('')}
     </MarkdownToJSX>
