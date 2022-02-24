@@ -13,7 +13,7 @@ import { Comentario as IComentario, Questao } from '../../interfaces';
 import { ComponentProps } from '../Drawer';
 import { Markdown } from '../Markdown';
 
-export function Comentario({
+export function EditComentario({
   data,
   setWidth,
   closeDrawer = () => {},

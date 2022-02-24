@@ -48,8 +48,9 @@ export function PageHeader({
     <div className='flex border-b pb-3 items-center mb-3'>
       {backButton && (
         <button
+          style={{minWidth: '2.5rem'}}
           onClick={() => onBackPress()}
-          className='h-9 w-9 flex-center bg-gray-100 mr-3 rounded-full'>
+          className='h-9 w-9  flex-center bg-gray-100 mr-3 rounded-full'>
           <FaChevronLeft />
         </button>
       )}

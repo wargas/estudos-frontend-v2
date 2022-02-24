@@ -1,5 +1,6 @@
 import { Redirect, Route, Switch } from 'react-router';
 import { AulaDetail } from './screens/Aula';
+import AulaDetalhe from './screens/AulaDetalhe';
 import { Aulas } from './screens/Aulas';
 import { Auth } from './screens/Auth';
 import { Disciplinas } from './screens/Disciplinas';
@@ -28,6 +29,7 @@ export function Routes() {
           <Route exact path='/dashboard' component={Home} />
           <Route exact path='/disciplinas' component={Disciplinas} />
           <Route exact path='/disciplinas/:id' component={Aulas} />
+          <Route exact path='/disciplinas/:disciplina_id/aulas/:aula_id' component={AulaDetalhe} />
           <Route exact path='/disciplinas/:disciplina_id/aula/:aula_id/:route?/:questao_id?' component={AulaDetail} />
           <Route exact path='/tempo' component={Tempo} />
           <Route exact path='/gerenciar' component={Gerenciar} />

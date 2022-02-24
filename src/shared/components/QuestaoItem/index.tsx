@@ -21,9 +21,9 @@ import {
   Questao,
   Respondida
 } from '../../interfaces';
-import { Comentario } from '../Comentario';
 import { DeleteQuestao } from '../DeleteQuestao';
 import { useDrawer } from '../Drawer';
+import { EditComentario } from '../EditComentario';
 import { EditQuestao } from '../EditQuestao';
 import { Estatisticas } from '../Estatisticas';
 import { Markdown } from '../Markdown';
@@ -385,7 +385,7 @@ export function QuestaoItem({ questoes }: Props) {
         <div className='flex pt-5 mt-auto'>
           <button
             onClick={() =>
-              openDrawer(Comentario, { id: questao?.id }, loadComentario)
+              openDrawer(EditComentario, { id: questao?.id }, loadComentario)
             }
             className='text-white ml-auto  flex gap-3 flex-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5'>
             <FaComment />

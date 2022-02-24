@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Questao, Respondida } from '../../interfaces';
 
-export function ListQuestoes({ questoes, data, respondidas }: Props) {
+export function ListQuestoes({ questoes, data, respondidas, onSelectQuestao }: Props) {
   const [items, setItems] = useState<number[]>([]);
 
   const history = useHistory();
@@ -30,15 +30,13 @@ export function ListQuestoes({ questoes, data, respondidas }: Props) {
     );
   }, []);
 
-  function handlerClickQuestao(id: number) {
-    history.push(`${id}`);
-  }
+ 
 
   return (
     <div className='grid grid-cols-5 gap-3 items-stretch p-3 pb-24'>
       {items.map((item, index) => (
         <div
-          onClick={() => handlerClickQuestao(questoes[index].id)}
+          onClick={() => onSelectQuestao(index)}
           className={`relative ${item === 0 && 'bg-gray-300'} ${
             item === 1 && 'bg-green-500 '
           } ${
@@ -59,4 +57,5 @@ type Props = {
   questoes: Questao[];
   data: DateTime;
   respondidas: Respondida[];
+  onSelectQuestao: (index: number) => void
 };

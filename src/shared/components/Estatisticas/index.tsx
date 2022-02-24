@@ -16,7 +16,7 @@ type DayProps = {
   tempo: number;
 };
 
-export function Estatisticas({ data, closeDrawer = () => {} }: ComponentProps) {
+export function Estatisticas({ data, setWidth, closeDrawer = () => {} }: ComponentProps) {
   const [loading, setLoading] = useState(false);
   const [currentDay, setCurrentDay] = useState<DayProps>();
   const [aula, setAula] = useState<Aula>();
@@ -80,6 +80,10 @@ export function Estatisticas({ data, closeDrawer = () => {} }: ComponentProps) {
     }
   }, [aula_id]);
 
+  useEffect(() => {
+    setWidth('96')
+  }, [])
+
   function loadAula() {
     setLoading(true);
     Api.get<Aula>(`aulas/${aula_id}`)
@@ -104,6 +108,7 @@ export function Estatisticas({ data, closeDrawer = () => {} }: ComponentProps) {
         )}
         {currentDay && (
           <ListQuestoes
+            onSelectQuestao={index => closeDrawer(index)}
             data={currentDay.data}
             respondidas={aula?.respondidas || []}
             questoes={aula?.questoes || []}
@@ -112,6 +117,7 @@ export function Estatisticas({ data, closeDrawer = () => {} }: ComponentProps) {
         {!currentDay &&
           days.map((day) => (
             <div
+              key={day.data.toISO()}
               onClick={() => setCurrentDay(day)}
               className='h-16 p-3 flex border-b hover:bg-gray-50 cursor-pointer border-gray-100'>
               <div>

@@ -204,7 +204,7 @@ export function Aulas() {
                     <td
                       onClick={() =>
                         history.push(
-                          `/disciplinas/${aula?.disciplina_id}/aula/${aula.id}`
+                          `/disciplinas/${aula?.disciplina_id}/aulas/${aula.id}`
                         )
                       }
                       className='px-3 overflow-hidden cursor-pointer h-14 flex items-center'>

@@ -91,3 +91,16 @@ export type Respondida = {
     user_id: number
     questao_id: number
 }
+
+export interface Paginate<T> {
+    meta: PaginateMeta,
+    data: T[]
+}
+
+export interface PaginateMeta {
+    total: number,
+    per_page: number,
+    current_page: number,
+    last_page: number,
+    first_page: number
+}
