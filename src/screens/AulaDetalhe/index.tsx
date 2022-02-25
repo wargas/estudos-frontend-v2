@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { useEffect, useRef, useState } from 'react';
-import { HotKeys } from 'react-hotkeys';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { BiLoaderAlt } from 'react-icons/bi';
 import {
   FaCheck,
@@ -37,6 +37,7 @@ import {
 import AulaService from '../../shared/services/AulaService';
 import QuestaoService from '../../shared/services/QuestaoService';
 
+
 export default function AulaDetalhe() {
   const { aula_id } = useParams<{ aula_id: string }>();
   const [page, setPage] = useState(1);
@@ -45,13 +46,64 @@ export default function AulaDetalhe() {
   const [riscadas, setRiscadas] = useState<string[]>([]);
   const [marcada, setMarcada] = useState('');
   const [respondida, setRespondida] = useState<Respondida>();
-  const [keyHandlres, setKeyHandlers] = useState<any>();
 
   const btnResponder = useRef<HTMLButtonElement>(null);
 
   const { push } = useHistory();
   const openDrawer = useDrawer();
   const openModal = useModal();
+
+  useHotkeys('a', () => {
+    handleMarcar('A')
+  })
+  useHotkeys('b', () => {
+    handleMarcar('B')
+  })
+
+  useHotkeys('c', () => {
+    handleMarcar('C')
+  })
+
+  useHotkeys('d', () => {
+    handleMarcar('D')
+  })
+
+  useHotkeys('e', () => {
+    handleMarcar('E')
+  })
+
+  useHotkeys('shift+a', () => {
+    handlerRiscadas('A')
+  }, [marcada])
+  useHotkeys('shift+b', () => {
+    handlerRiscadas('B')
+  })
+  useHotkeys('shift+c', () => {
+    handlerRiscadas('C')
+  })
+  useHotkeys('shift+d', () => {
+    handlerRiscadas('D')
+  })
+
+  useHotkeys('shift+e', () => {
+    handlerRiscadas('E')
+  })
+
+  useHotkeys('enter', () => {
+    btnResponder.current?.click()
+  })
+
+  useHotkeys('ctrl+z', () => {
+    mutateRespondida.mutate()
+  })
+
+  useHotkeys('left', () => {
+    setPage(p => p > 1 ? p - 1 : 1)
+  }, [page])
+
+  useHotkeys('right', () => {
+    setPage(p => meta?.last_page && p  < meta?.last_page ? p + 1 : 1)
+  }, [meta?.last_page, page])
 
   const { data: aula, isLoading } = useQuery<Aula>(['aula', aula_id], () =>
     AulaService.getAulaById(aula_id)
@@ -60,7 +112,6 @@ export default function AulaDetalhe() {
   const {
     data: questoesQuery,
     refetch: refetchQuestao,
-    failureCount,
   } = useQuery<Paginate<Questao>>(
     ['questao', page, aula_id],
     () => QuestaoService.getQuestioesByAulaId(aula_id, page, 1),
@@ -139,11 +190,14 @@ export default function AulaDetalhe() {
     if (!!respondida) {
       return;
     }
-    if (marcada === letra) {
-      setMarcada('');
-    } else {
-      setMarcada(letra);
-    }
+
+    setMarcada(_marcada => {
+      if(_marcada === letra) {
+        return ''
+      }
+      return letra
+    })
+    
   }
 
   function handlerRiscadas(letra: string) {
@@ -163,44 +217,7 @@ export default function AulaDetalhe() {
     mutateQuestao.mutate();
   }
 
-  const keyMap = {
-    mark: ['a', 'b', 'c', 'd', 'e', 'A', 'B', 'C', 'D', 'E'],
-    risk: [
-      'shift+a',
-      'shift+b',
-      'shift+c',
-      'shift+d',
-      'shift+e',
-      'shift+A',
-      'shift+B',
-      'shift+C',
-      'shift+D',
-      'shift+E',
-    ],
-    prev: ['left'],
-    right: ['right'],
-    enter: ['r']
-  };
-
-  useEffect(() => {
-    setKeyHandlers({
-      mark: (ev: any) => handleMarcar(String(ev.key).toUpperCase()),
-      risk: (ev: any) => handlerRiscadas(String(ev.key).toUpperCase()),
-      prev: () => setPage((page) => (page > 1 ? page - 1 : 1)),
-      enter: () => btnResponder.current?.click(), 
-      right: () =>
-        meta?.last_page &&
-        page < meta?.last_page &&
-        setPage((page) => page + 1),
-    });
-
-    return () => {
-      setKeyHandlers(null);
-    };
-  }, [page, marcada, riscadas, questao]);
-
   return (
-    <HotKeys keyMap={keyMap} handlers={keyHandlres}>
       <div>
         <PageHeader
           backButton={true}
@@ -423,6 +440,5 @@ export default function AulaDetalhe() {
           </button>
         </div>
       </div>
-    </HotKeys>
   );
 }
