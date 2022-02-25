@@ -132,6 +132,7 @@ export default function AulaDetalhe() {
   useEffect(() => {
     setRiscadas([]);
     setMarcada('');
+    setRespondida({} as Respondida)
   }, [page]);
 
   function handleMarcar(letra: string) {
