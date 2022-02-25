@@ -205,7 +205,7 @@ export default function AulaDetalhe() {
         <PageHeader
           backButton={true}
           isLoading={isLoading}
-          title={`${aula?.name}`}
+          title={`${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}`}
           subtitle={`${aula?.disciplina?.name} / ${aula?.questoes?.length} questões`}
           onBackPress={() => {
             push(`/disciplinas/${aula?.disciplina_id}`);
