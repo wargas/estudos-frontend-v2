@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { BiLoaderAlt } from 'react-icons/bi';
 import {
@@ -46,6 +46,8 @@ export default function AulaDetalhe() {
   const [marcada, setMarcada] = useState('');
   const [respondida, setRespondida] = useState<Respondida>();
   const [keyHandlres, setKeyHandlers] = useState<any>();
+
+  const btnResponder = useRef<HTMLButtonElement>(null);
 
   const { push } = useHistory();
   const openDrawer = useDrawer();
@@ -176,6 +178,7 @@ export default function AulaDetalhe() {
     ],
     prev: ['left'],
     right: ['right'],
+    enter: ['r']
   };
 
   useEffect(() => {
@@ -183,6 +186,7 @@ export default function AulaDetalhe() {
       mark: (ev: any) => handleMarcar(String(ev.key).toUpperCase()),
       risk: (ev: any) => handlerRiscadas(String(ev.key).toUpperCase()),
       prev: () => setPage((page) => (page > 1 ? page - 1 : 1)),
+      enter: () => btnResponder.current?.click(), 
       right: () =>
         meta?.last_page &&
         page < meta?.last_page &&
@@ -358,6 +362,7 @@ export default function AulaDetalhe() {
 
           <div className='border-t p-5 flex items-center'>
             <button
+              ref={btnResponder}
               onClick={handlerResponder}
               disabled={
                 marcada === '' || mutateQuestao.isLoading || !!respondida
