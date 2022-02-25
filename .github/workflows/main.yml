@@ -13,18 +13,18 @@ jobs:
         with: 
           node-version: '16'
       
-      - name: Build Project
-        run: |
-          npm install
-          npm run build
+      # - name: Build Project
+      #   run: |
+      #     npm install
+      #     npm run build
         
-      - name: Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
-        with:
-          server: deltex-work.umbler.net
-          username: deltex-work
-          password: ${{ secrets.password }}
-          local-dir: ./build/
-          server-dir: public/
+      # - name: Sync files
+      #   uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      #   with:
+      #     server: deltex-work.umbler.net
+      #     username: deltex-work
+      #     password: ${{ secrets.password }}
+      #     local-dir: ./build/
+      #     server-dir: public/
       
       
