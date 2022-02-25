@@ -93,13 +93,12 @@ const Sidebar = () => {
           <li className='flex  px-2 my-1'>
             <button className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
               <FaExclamation className='mr-3' />
-              <span>Versão: <span className='text-gray-300'> 22.02.23.2 </span></span>
+              <span>Versão: <span className='text-gray-300'> 25.02.23.1 </span></span>
             </button>
           </li>
         </ul>
         <div className='border-b'></div>
       </div>
-      {/* {JSON.stringify(React.)} */}
       <div className='h-14 border-t cursor-pointer transition-all hover:bg-gray-100 flex items-center border-gray-50'>
         <div className='w-9 h-9 flex mx-2 items-center rounded-full'>
           <img

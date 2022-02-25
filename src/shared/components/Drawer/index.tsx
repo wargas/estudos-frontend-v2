@@ -1,5 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { createContext, useContext, useState } from 'react';
+import styles from './Drawer.module.css';
+
 
 export type ComponentProps = {
   data?: any;
@@ -44,20 +46,22 @@ export function DrawerProvider(props: any) {
     setComponet(undefined);
     setData(undefined);
     setCallbackFn(undefined);
-    setWidth('72')
+    setWidth('xs')
   }
+
+  
 
   return (
     <DrawerContext.Provider value={{ openDrawer, closeDrawer }}>
       {props.children}
       <Transition show={!!Component}>
-        <div className='inset-0 absolute max-h-screen overflow-y-hidden'>
+        <div className={styles.wrapper}>
           <div
             onClick={() => closeDrawer(null)}
-            className='inset-0 absolute cursor-pointer z-10 bg-black opacity-20'></div>
+            className={styles.backdrop}></div>
           
           <Transition.Child
-            className={`absolute top-0 bottom-0 w-${width} bg-white z-50 right-0`}
+            className={`${styles[width] || styles['xs']} ${styles.content}`}
             enter={`transition-all ease-linear`}
             enterFrom={`transform translate-x-${width}`}
             enterTo={`transform -translate-x-0 opacity-100`}

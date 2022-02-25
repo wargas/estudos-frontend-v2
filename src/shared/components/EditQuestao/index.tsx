@@ -27,7 +27,7 @@ export function EditQuestao({
   }, [questao]);
 
   useEffect(() => {
-    setWidth('1/2');
+    setWidth('md');
     loadQuestao();
   }, []);
 

@@ -12,6 +12,8 @@ import Api from '../../Api';
 import { Comentario as IComentario, Questao } from '../../interfaces';
 import { ComponentProps } from '../Drawer';
 import { Markdown } from '../Markdown';
+import styles from './Style.module.css';
+
 
 export function EditComentario({
   data,
@@ -23,7 +25,7 @@ export function EditComentario({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setWidth('1/2');
+    setWidth('md');
     loadComentario();
   }, []);
 
@@ -63,7 +65,7 @@ export function EditComentario({
   }
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className={styles.wrapper}>
       <div className='h-14 bg-primary-600 flex items-center'>
         <button onClick={() => closeDrawer(null)} className='px-5 text-white'>
           <FaChevronLeft />

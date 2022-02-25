@@ -81,7 +81,7 @@ export function Estatisticas({ data, setWidth, closeDrawer = () => {} }: Compone
   }, [aula_id]);
 
   useEffect(() => {
-    setWidth('96')
+    setWidth('xs')
   }, [])
 
   function loadAula() {

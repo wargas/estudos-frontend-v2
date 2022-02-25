@@ -1,0 +1,40 @@
+.input {
+    @apply border focus:outline-none px-5 rounded h-10 w-full
+}
+
+.inputLabel {
+    @apply mb-3 text-gray-500
+}
+
+.wrapper {
+    @apply h-screen bg-slate-50 bg-cover w-screen flex flex-col justify-center;
+    /* background-image: url(https://i.ibb.co/YhMNgJf/background.jpg); */
+}
+
+.wrapper form {
+    @apply mx-auto flex flex-col gap-4 w-96 p-5 bg-white opacity-100 rounded shadow-lg text-base
+}
+
+.title {
+    @apply text-gray-700 text-4xl font-extrabold
+}
+
+.subtitle {
+    @apply text-primary-500
+}
+
+.buttonPrimary {
+    @apply bg-primary-600 gap-3 flex justify-center items-center hover:bg-primary-700 w-full h-10 text-white rounded
+}
+
+.iconLoading {
+    @apply animate-spin text-primary-600
+}
+
+.header {
+    @apply mb-5
+}
+
+.footer {
+    @apply mb-5
+}

@@ -1,0 +1,31 @@
+.wrapper {
+    @apply inset-0 absolute max-h-screen overflow-y-hidden
+}
+
+.backdrop {
+    @apply inset-0 absolute cursor-pointer z-10 bg-black opacity-20
+}
+
+.content {
+    @apply absolute top-0 bottom-0 bg-white z-50 right-0 w-screen;
+}
+
+.xs {
+    @apply max-w-xs
+}
+
+.sm {
+    @apply max-w-screen-sm
+}
+
+.md {
+    @apply max-w-screen-md
+}
+
+.lg {
+    @apply max-w-screen-lg
+}
+
+.xl {
+    @apply max-w-screen-xl
+}
