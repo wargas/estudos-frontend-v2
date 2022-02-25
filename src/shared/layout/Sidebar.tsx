@@ -2,6 +2,7 @@ import {
   FaCalendar, FaChartBar, FaChevronRight, FaCog, FaExclamation, FaListAlt, FaLockOpen, FaSearch, FaUserLock
 } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import dataPackage from '../../../package.json';
 import { useAuth } from '../auth';
 import { AlterarSenha } from '../components/AlterarSenha';
 import { useDrawer } from '../components/Drawer';
@@ -88,12 +89,12 @@ const Sidebar = () => {
               >
               <FaLockOpen className='mr-3' />
               <span>Sair</span>
-            </button>
+            </button> 
           </li>
           <li className='flex  px-2 my-1'>
-            <button className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
+            <button className='tsext-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
               <FaExclamation className='mr-3' />
-              <span>Versão: <span className='text-gray-300'> 25.02.23.1 </span></span>
+              <span>Versão: <span className='text-gray-300'> {dataPackage.version} </span></span>
             </button>
           </li>
         </ul>
