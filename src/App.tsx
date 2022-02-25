@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import WebFontLoader from 'webfontloader';
@@ -25,7 +25,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen />
-      <HashRouter>
+      <Router>
         <AuthProvider> 
           <ModalProvider>
             <DrawerProvider>
@@ -38,7 +38,7 @@ function App() {
             </DrawerProvider>
           </ModalProvider>
         </AuthProvider>
-      </HashRouter>
+      </Router>
     </QueryClientProvider>
   );
 }
