@@ -30,7 +30,7 @@ export function Relogio({ aula }: TempoProps) {
             horario: ''
         })
     }
-  }, [aula]);
+  }, [aula.id]);
 
   useEffect(() => {
     let interval = setInterval(() => {}, 1000);
@@ -95,7 +95,7 @@ export function Relogio({ aula }: TempoProps) {
           </div>
         <div className="tempo mx-3">
           <h3 className="p-0 m-0 fontb-bold w-32 text-center text-2xl">
-            {Duration.fromObject({ seconds: secounds }).toFormat("hh:mm:ss")}
+           {registro?.id} {Duration.fromObject({ seconds: secounds }).toFormat("hh:mm:ss")}
           </h3>
         </div>
         <div className="flex gap-4">
