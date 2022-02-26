@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-    // baseURL: 'https://app-estudos.herokuapp.com/api'
-    baseURL: 'http://localhost:3333/api'
+    baseURL: process.env.REACT_APP_API_URL
 })
 
 
