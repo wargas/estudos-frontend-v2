@@ -3,7 +3,7 @@ import styles from './Layout.module.css';
 import Sidebar from './sidebar';
 
 
-export default function (props: any) {
+export default function Layout (props: any) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>

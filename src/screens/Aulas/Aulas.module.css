@@ -1,0 +1,44 @@
+.wrapper {
+
+}
+
+.actionButton {
+    @apply text-primary-600 gap-2 flex items-center justify-center h-8 px-5 rounded-full bg-white shadow-sm ml-3
+}
+
+.actionButton svg {
+    @apply text-sm
+}
+
+.content {
+    @apply bg-white shadow-sm overflow-hidden rounded
+}
+
+.header {
+    @apply p-5 flex items-center border-b border-gray-100
+}
+
+.header h1 {
+    @apply text-gray-600
+}
+
+.header h1.loading {
+    @apply bg-gray-200 rounded-full animate-pulse h-4 w-48
+}
+
+.search { 
+    @apply h-10 w-96 flex ml-auto bg-gray-100 rounded-full
+}
+
+.search input {
+    @apply bg-transparent flex-1 px-5 focus:outline-none
+}
+
+.search button {
+    @apply h-10 bg-primary-600 hover:bg-primary-700 rounded-r-full text-white ml-auto px-5
+}
+
+.contentLoading {
+    @apply relative;
+    min-height: 200px;
+}

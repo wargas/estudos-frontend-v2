@@ -5,6 +5,7 @@ import { Aulas } from './screens/Aulas';
 import { Auth } from './screens/Auth';
 import { Disciplinas } from './screens/Disciplinas';
 import { Gerenciar } from './screens/Gerenciar';
+import QuestoesPage from './screens/Gerenciar/QuestoesPage';
 import { Home } from './screens/Home';
 import { Tempo } from './screens/Tempo';
 import { useAuth } from './shared/auth';
@@ -29,16 +30,26 @@ export function Routes() {
           <Route exact path='/dashboard' component={Home} />
           <Route exact path='/disciplinas' component={Disciplinas} />
           <Route exact path='/disciplinas/:id' component={Aulas} />
-          <Route exact path='/disciplinas/:disciplina_id/aulas/:aula_id' component={AulaDetalhe} />
-          <Route exact path='/disciplinas/:disciplina_id/aula/:aula_id/:route?/:questao_id?' component={AulaDetail} />
+          <Route
+            exact
+            path='/disciplinas/:disciplina_id/aulas/:aula_id'
+            component={AulaDetalhe}
+          />
+          <Route
+            exact
+            path='/disciplinas/:disciplina_id/aula/:aula_id/:route?/:questao_id?'
+            component={AulaDetail}
+          />
           <Route exact path='/tempo' component={Tempo} />
-          <Route exact path='/gerenciar' component={Gerenciar} />
+          <Route exact path='/gerenciar' component={Gerenciar}></Route>
+          <Route exact path='/gerenciar/questoes' component={QuestoesPage} />
           <Route exact path='/'>
             <Redirect to='/dashboard' />
           </Route>
         </Layout>
-        {!logged && <Redirect to="/login" />}
+        {!logged && <Redirect to='/login' />}
       </Route>
+      <Route path='**' component={() => <p>page not found</p>} />
     </Switch>
   );
 }

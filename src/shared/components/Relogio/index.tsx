@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { AxiosResponse } from "axios";
 import { DateTime, Duration } from "luxon";
 import React, { useEffect, useState } from "react";

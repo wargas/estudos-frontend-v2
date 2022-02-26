@@ -1,0 +1,7 @@
+.wrapper {
+    @apply absolute inset-0 flex items-center justify-center
+}
+
+.wrapper svg {
+    @apply text-4xl animate-spin
+}

@@ -119,7 +119,7 @@ export default function AulaDetalhe() {
   );
 
   const { data: aula, isLoading } = useQuery<Aula>(['aula', aula_id], () =>
-    AulaService.getAulaById(aula_id)
+    AulaService.getAulaById(aula_id, { withMeta: true, withDisciplina: true})
   );
 
   const {
@@ -238,7 +238,7 @@ export default function AulaDetalhe() {
         backButton={true}
         isLoading={isLoading}
         title={`${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}`}
-        subtitle={`${aula?.disciplina?.name} / ${aula?.questoes?.length} questões`}
+        subtitle={`${aula?.disciplina?.name} / ${aula?.meta.questoes_count} questões`}
         onBackPress={() => {
           push(`/disciplinas/${aula?.disciplina_id}`);
         }}>

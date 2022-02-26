@@ -4,11 +4,17 @@ import Api from "../Api";
 export default class QuestaoService {
     static async getQuestioesByAulaId(aula_id: string | number, page?: number, perPage?: number) {
 
-        const params = qs.stringify({ aula_id, page, perPage })
+        const params = qs.stringify({ page, perPage })
 
 
-        const { data } = await Api.get(`/questoes?${params}`)
+        const { data } = await Api.get(`aulas/${aula_id}/questoes?${params}`)
 
+        return data;
+    }
+
+    static async getAll(page?: number, perPage?: number) {
+        const params = qs.stringify({ page, perPage })
+        const { data } = await Api.get(`questoes?${params}`)
         return data;
     }
 

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import qs from 'query-string';
 import { ClipboardEvent, useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -31,7 +30,7 @@ export function EditQuestoes({
 
   async function loadQuestoes() {
     setLoading(true);
-    Api.get<Questao[]>(`questoes?${qs.stringify(data)}`)
+    Api.get<Questao[]>(`aulas/${data.aula_id}/questoes`)
       .then(({ data }) => setQuestoes(data))
       .finally(() => setLoading(false));
   }

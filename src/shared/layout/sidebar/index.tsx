@@ -63,10 +63,10 @@ const Sidebar = () => {
           <li className='flex  px-2 my-1'>
             <NavLink
               activeClassName='bg-gray-50'
-              to='/gerenciar'
+              to='/gerenciar/questoes'
               className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
               <FaCog className='mr-3' />
-              <span>Gerenciar</span>
+              <span>Questões</span>
             </NavLink>
           </li>
         </ul>
