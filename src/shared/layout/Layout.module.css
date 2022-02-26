@@ -1,0 +1,11 @@
+.wrapper {
+    @apply text-base;
+}
+
+.content {
+    @apply absolute bg-gray-50 flex flex-col left-64 top-0 right-0 bottom-0;
+}
+
+.main {
+    @apply flex-1 p-5 overflow-y-scroll;
+}

@@ -2,29 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .scroll {
+    scrollbar-width: thin;
+    scrollbar-color: transparent;
+  }
+}
 
 .flex-center {
-  @apply flex items-center justify-center
+  @apply flex items-center justify-center;
 }
 
-.scroll {
-  scrollbar-width: thin;
-  scrollbar-color: transparent;
-}
 
-.enunciado p, ul, ol {
-  margin-bottom: .5rem;
+
+.enunciado p,
+ul,
+ol {
+  margin-bottom: 0.5rem;
 }
 
 .enunciado table {
-  @apply w-full border-t
+  @apply w-full border-t;
 }
 
 .enunciado table tr {
-  @apply border-b h-8
+  @apply border-b h-8;
 }
 
-.enunciado table tr td,th {
+.enunciado table tr td,
+th {
   @apply px-3;
 }
 
@@ -38,14 +44,16 @@
   list-style-position: inside;
 }
 
-.enunciado ul li, ol li, table {
-  margin-bottom: .3rem;
+.enunciado ul li,
+ol li,
+table {
+  margin-bottom: 0.3rem;
 }
 
 .enunciado table {
-  @apply border shadow-sm
+  @apply border shadow-sm;
 }
 
 table tr th {
-  background-color: #cccccc50
+  background-color: #cccccc50;
 }

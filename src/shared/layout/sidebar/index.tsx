@@ -2,10 +2,11 @@ import {
   FaCalendar, FaChartBar, FaChevronRight, FaCog, FaExclamation, FaListAlt, FaLockOpen, FaSearch, FaUserLock
 } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
-import dataPackage from '../../../package.json';
-import { useAuth } from '../auth';
-import { AlterarSenha } from '../components/AlterarSenha';
-import { useDrawer } from '../components/Drawer';
+import dataPackage from '../../../../package.json';
+import { useAuth } from '../../auth';
+import { AlterarSenha } from '../../components/AlterarSenha';
+import { useDrawer } from '../../components/Drawer';
+import styles from './Sidebar.module.css';
 
 
 const Sidebar = () => {
@@ -14,20 +15,19 @@ const Sidebar = () => {
   const { logout, user } = useAuth()
 
   return (
-    <div className='absolute flex flex-col left-0 top-0 bottom-0 w-64 shadow bg-white'>
-      <div className='h-14 flex bg-primary-600 shadow items-center justify-center'>
-        <h1 className='text-2xl font-bold cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-primary-50 to-primary-300'>
+    <div className={styles.wrapper}>
+      <div className={styles.header}>
+        <h1>
           <NavLink to="/">APPESTUDOS</NavLink>
         </h1>
       </div>
-      <div className='flex-1 scroll overflow-y-auto'>
-        <div className='m-3 mb-5 bg-gray-100 rounded-full items-center px-5 flex'>
+      <div className={[styles.center, 'scroll'].join(' ')}>
+        <div className={styles.search}>
           <input
             type='text'
-            className='w-full focus:outline-none bg-transparent  h-9'
             placeholder='Pesquisa...'
           />
-          <FaSearch className='text-gray-400' />
+          <FaSearch  />
         </div>
         <div className='text-gray-400 pl-3 text-sm mt-3'>MENU</div>
         <ul className=''>
@@ -100,7 +100,7 @@ const Sidebar = () => {
         </ul>
         <div className='border-b'></div>
       </div>
-      <div className='h-14 border-t cursor-pointer transition-all hover:bg-gray-100 flex items-center border-gray-50'>
+      <div className={styles.footer}>
         <div className='w-9 h-9 flex mx-2 items-center rounded-full'>
           <img
             className='w-7 h-7 rounded-full'

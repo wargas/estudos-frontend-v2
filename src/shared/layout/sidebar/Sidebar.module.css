@@ -1,0 +1,31 @@
+.wrapper {
+    @apply absolute flex flex-col left-0 top-0 bottom-0 w-64 shadow bg-white
+}
+
+.header {
+    @apply h-14 flex bg-primary-600 shadow items-center justify-center
+}
+
+.header h1 {
+    @apply text-2xl font-bold cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-primary-50 to-primary-300
+}
+
+.center {
+    @apply flex-1  overflow-y-auto
+}
+
+.search {
+    @apply m-3 mb-5 bg-gray-100 rounded-full items-center px-5 flex
+}
+
+.search input {
+    @apply w-full focus:outline-none bg-transparent  h-9
+}
+
+.search svg {
+    @apply text-gray-400
+}
+
+.footer {
+    @apply h-14 border-t cursor-pointer transition-all hover:bg-gray-100 flex items-center border-gray-50
+}

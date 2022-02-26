@@ -1,0 +1,41 @@
+.questaoWrapper {
+    @apply bg-white rounded shadow-sm relative;
+    min-height: 200px;
+}
+
+.questaoHeader {
+    @apply flex items-center border-b h-16 px-5
+}
+
+.bancaImageWrapper {
+    @apply rounded-full w-10 h-10 border flex items-center justify-center mr-3 shadow-sm
+}
+
+.bancaImageWrapper img {
+    @apply w-8 h-8 rounded-full
+}
+
+.actionButton {
+    @apply hover:bg-gray-100 text-gray-600 transition-all w-10 h-10 flex items-center justify-center  rounded-full
+}
+
+.actionButtonEstatisticas {
+    @apply text-gray-600 font-bold px-3 h-10 w-32 rounded-full bg-gray-50 hover:bg-gray-100
+}
+
+.questaoContent {
+    @apply px-8 py-5 relative;
+    min-height: 200px;
+}
+
+.loadingQuestao {
+    @apply inset-0 bg-white absolute flex items-center justify-center
+}
+
+.loadingQuestao svg {
+    @apply animate-spin text-3xl text-gray-500
+}
+
+.loadingRespondidas {
+    @apply animate-spin text-gray-500
+}
