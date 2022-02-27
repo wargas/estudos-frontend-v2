@@ -293,12 +293,7 @@ export default function AulaDetalhe() {
           </button>
           <button
             onClick={() =>
-              openDrawer(Estatisticas, { aula_id: aula_id }, (ev) => {
-                if (ev !== null) {
-                  // setPage(ev + 1);
-                  // next()
-                }
-              })
+              openDrawer(Estatisticas, { aula_id: aula_id })
             }
             className={styles.actionButtonEstatisticas}>
             {page} de {meta?.last_page}
@@ -314,7 +309,7 @@ export default function AulaDetalhe() {
             <>
               <div className={styles.questaoTitle}>
                 <h1>
-                  {questao.header} {pathname}
+                  {questao.header}
                 </h1>
               </div>
               <div className={styles.enunciado}>
