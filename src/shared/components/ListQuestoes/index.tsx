@@ -39,9 +39,9 @@ export function ListQuestoes({ questoes, data, respondidas }: Props) {
         <div
           onClick={() => push(`${pathname}?page=${index + 1}`)}
           className={`relative ${item === 0 && 'bg-gray-300'} ${
-            item === 1 && 'bg-green-500 '
+            item === 1 && 'bg-green-600 '
           } ${
-            item === -1 && 'bg-red-500'
+            item === -1 && 'bg-red-600'
           } h-10 shadow-sm flex-center cursor-pointer text-white rounded`}
           key={index}>
           <span className='text-sm'>

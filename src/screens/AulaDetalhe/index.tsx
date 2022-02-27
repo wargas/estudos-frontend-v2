@@ -37,7 +37,7 @@ import ShowComentarios from './ShowComentarios';
 
 
 export default function AulaDetalhe() {
-  const { aula_id } = useParams<{ aula_id: string }>();
+  const { aula_id = 0 } = useParams<{ aula_id: string }>();
   const [questao, setQuestao] = useState<Questao>();
   const [meta, setMeta] = useState<PaginateMeta>();
   const [riscadas, setRiscadas] = useState<string[]>([]);
@@ -84,8 +84,10 @@ export default function AulaDetalhe() {
     [marcada, respondida]
   );
 
-  useHotkeys('enter', () => {
+  useHotkeys('enter', (ev) => {
     btnResponder.current?.click();
+
+    ev.preventDefault()
   });
 
   useHotkeys('ctrl+z', () => {
