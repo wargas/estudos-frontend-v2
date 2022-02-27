@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fa';
 import { IoMdMore } from 'react-icons/io';
 import { useQuery } from 'react-query';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useDrawer } from '../../shared/components/Drawer';
 import { EditQuestoes } from '../../shared/components/EditQuestoes';
 import { InsertAulas } from '../../shared/components/InsertAulas';
@@ -50,7 +50,7 @@ export function Aulas() {
   );
 
   const openDrawer = useDrawer();
-  const history = useHistory();
+  const navigate = useNavigate()
 
   function updateOrderBy(_coluna: string) {
     const [coluna, ordem] = orderBy.split(':');
@@ -73,7 +73,7 @@ export function Aulas() {
       {disciplina && (
         <PageHeader
           isLoading={isLoadingDisciplina}
-          onBackPress={() => history.push('/disciplinas')}
+          onBackPress={() => navigate('/disciplinas')}
           backButton
           title={`${disciplina?.name || ''}`}>
           <button
@@ -193,7 +193,7 @@ export function Aulas() {
                       className='h-14  hover:bg-gray-100 border-b border-gray-100'>
                       <td
                         onClick={() =>
-                          history.push(
+                          navigate(
                             `/disciplinas/${aula?.disciplina_id}/aulas/${aula.id}`
                           )
                         }

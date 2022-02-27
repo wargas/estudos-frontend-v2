@@ -1,0 +1,19 @@
+.wrapper {
+    @apply h-14 bg-primary-600 flex items-center
+}
+
+.Divider {
+    @apply ml-auto
+}
+
+.Button {
+    @apply w-10 h-10 rounded-full transition-all mr-3 flex cursor-pointer items-center justify-center hover:bg-primary-700
+}
+
+#toggleButton {
+    @apply ml-3 lg:hidden;
+}
+
+.Button svg {
+    @apply text-white
+}

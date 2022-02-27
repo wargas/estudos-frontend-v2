@@ -11,7 +11,7 @@ import {
 } from 'react-icons/fa';
 import { IoMdMore } from 'react-icons/io';
 import { useQuery, useQueryClient } from 'react-query';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import Api from '../../shared/Api';
 import { useDrawer } from '../../shared/components/Drawer';
 import { PageHeader } from '../../shared/components/PageHeader';
@@ -22,7 +22,7 @@ export function Disciplinas() {
   const [loading] = useState(false);
   const [search, setSearch] = useState('');
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const openDrawer = useDrawer();
 
@@ -98,7 +98,7 @@ export function Disciplinas() {
             key={disciplina.id}
             className='border-b flex hover:bg-gray-100 transition-all border-gray-50 p-3 px-5 '>
             <div
-              onClick={() => history.push(`/disciplinas/${disciplina.id}`)}
+              onClick={() => navigate(`/disciplinas/${disciplina.id}`)}
               className='flex flex-1 cursor-pointer'>
               <div className='w-10 h-10 bg-primary-600 text-white rounded-full mr-5 flex items-center justify-center text-center'>
                 <span className='text-base'>{disciplina.id}</span>
@@ -121,7 +121,7 @@ export function Disciplinas() {
                 <Menu.Item>
                   <button
                     onClick={() =>
-                      history.push(`/disciplinas/${disciplina.id}`)
+                      navigate(`/disciplinas/${disciplina.id}`)
                     }
                     className='flex items-center text-gray-600 px-5 p-3 w-full text-left hover:bg-gray-100 border-b border-gray-50'>
                     <FaSearch className='mr-5 text-sm' />

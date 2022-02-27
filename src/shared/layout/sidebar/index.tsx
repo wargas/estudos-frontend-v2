@@ -1,21 +1,24 @@
-import {
-  FaCalendar, FaChartBar, FaChevronRight, FaCog, FaExclamation, FaListAlt, FaLockOpen, FaSearch, FaUserLock
-} from 'react-icons/fa';
+import { FC } from 'react';
+import { FaCalendar, FaChartBar, FaChevronRight, FaCog, FaExclamation, FaListAlt, FaLockOpen, FaSearch, FaUserLock } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import dataPackage from '../../../../package.json';
 import { useAuth } from '../../auth';
 import { AlterarSenha } from '../../components/AlterarSenha';
 import { useDrawer } from '../../components/Drawer';
+import { MenuItem } from './MenuItem';
 import styles from './Sidebar.module.css';
 
+type props = {
+  showMenu: boolean
+}
 
-const Sidebar = () => {
+const Sidebar:FC<props> = ({showMenu}) => {
 
   const openDrawer = useDrawer()
   const { logout, user } = useAuth()
 
   return (
-    <div className={styles.wrapper}>
+    <div className={[styles.wrapper, showMenu ? styles.opened : ''].join(' ')}>
       <div className={styles.header}>
         <h1>
           <NavLink to="/">APPESTUDOS</NavLink>
@@ -31,44 +34,10 @@ const Sidebar = () => {
         </div>
         <div className='text-gray-400 pl-3 text-sm mt-3'>MENU</div>
         <ul className=''>
-          <li className='flex  px-2 my-1'>
-            <NavLink
-              to='/dashboard'
-              activeClassName='bg-gray-50'
-              className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'
-              href=''>
-              <FaChartBar className='mr-3' />
-              <span>Dashboard</span>
-            </NavLink>
-          </li>
-          <li className='flex  px-2 my-1'>
-            <NavLink
-              activeClassName='bg-gray-50'
-              to='/disciplinas'
-              className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
-              <FaListAlt className='mr-3' />
-              <span>Disciplinas</span>
-            </NavLink>
-          </li>
-          <li className='flex  px-2 my-1'>
-            <NavLink
-              activeClassName='bg-gray-50'
-              to='/tempo'
-              className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'
-              href=''>
-              <FaCalendar className='mr-3' />
-              <span>Tempo</span>
-            </NavLink>
-          </li>
-          <li className='flex  px-2 my-1'>
-            <NavLink
-              activeClassName='bg-gray-50'
-              to='/gerenciar/questoes'
-              className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'>
-              <FaCog className='mr-3' />
-              <span>Questões</span>
-            </NavLink>
-          </li>
+          <MenuItem title='Dashboard' link='/dashboard' Icon={FaChartBar} />
+          <MenuItem title='Disciplinas' link='/disciplinas' Icon={FaListAlt} />
+          <MenuItem title='Tempo' link='/tempo' Icon={FaCalendar} />
+          <MenuItem title='Questões' link='/gerenciar/questoes' Icon={FaCog} />
         </ul>
         <div className='border-b'></div>
         <div className='text-gray-400 pl-3 text-sm mt-5'>USUÁRIO</div>
@@ -119,5 +88,7 @@ const Sidebar = () => {
     </div>
   );
 }
+
+
 
 export default Sidebar

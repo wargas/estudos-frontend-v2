@@ -1,0 +1,15 @@
+.wrapper {
+    @apply flex  px-2 my-1
+}
+
+.item {
+    @apply text-gray-600 rounded flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50
+}
+
+.active {
+@apply bg-gray-50
+}
+
+.icon {
+    @apply mr-3
+}

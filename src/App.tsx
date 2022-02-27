@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Routes } from './Routes';
+import { AppRoutes } from './AppRoutes';
 import { AuthProvider } from './shared/auth';
 import { DrawerProvider } from './shared/components/Drawer';
 import { ModalProvider } from './shared/components/Modal';
@@ -24,7 +24,7 @@ function App() {
                 autoClose={2000}
                 theme='light'
               />
-              <Routes />
+              <AppRoutes />
             </DrawerProvider>
           </ModalProvider>
         </AuthProvider>

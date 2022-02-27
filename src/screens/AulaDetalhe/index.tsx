@@ -12,7 +12,7 @@ import {
   FaUndo
 } from 'react-icons/fa';
 import { useMutation, useQuery } from 'react-query';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
   DeleteQuestao, EditQuestao,
@@ -46,7 +46,7 @@ export default function AulaDetalhe() {
   
   const btnResponder = useRef<HTMLButtonElement>(null);
 
-  const { push } = useHistory();
+  const push = useNavigate()
   const openDrawer = useDrawer();
   const openModal = useModal();
 

@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Questao, Respondida } from '../../interfaces';
 
 export function ListQuestoes({ questoes, data, respondidas }: Props) {
   const [items, setItems] = useState<number[]>([]);
 
-  const { push } = useHistory();
+  const navigate = useNavigate();
   const { pathname } = useLocation()
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function ListQuestoes({ questoes, data, respondidas }: Props) {
     <div className='grid grid-cols-5 gap-3 items-stretch p-3 pb-24'>
       {items.map((item, index) => (
         <div
-          onClick={() => push(`${pathname}?page=${index + 1}`)}
+          onClick={() => navigate(`${pathname}?page=${index + 1}`)}
           className={`relative ${item === 0 && 'bg-gray-300'} ${
             item === 1 && 'bg-green-600 '
           } ${

@@ -7,6 +7,6 @@ export default {
     parameters: {}
 } as ComponentMeta<typeof Sidebar>
 
-const template: ComponentStory<typeof Sidebar> = (args) => <Sidebar />
+const template: ComponentStory<typeof Sidebar> = (args) => <Sidebar showMenu />
 
 export const AppSidebar = template.bind({})

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import Api from "../Api";
 import AuthContext, { UserType } from "./AuthContext";
@@ -13,7 +13,7 @@ function AuthProvider(props: any) {
     const [loading, setLoading] = useState(true)
 
     const location = useLocation()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const interceptorResponse = Api.interceptors.response.use(response => response, error => {
@@ -60,7 +60,7 @@ function AuthProvider(props: any) {
 
     async function logout() {
         setToken()
-        history.push('/login')
+        navigate('/login')
     }
 
     async function loadUser() {
@@ -73,7 +73,7 @@ function AuthProvider(props: any) {
             setLogged(true)
             
             if(location.pathname === '/login') {
-                history.push('/')
+                navigate('/')
             }
         } catch (error) {
             
