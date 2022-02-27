@@ -43,28 +43,33 @@ export default function AulaDetalhe() {
   const [riscadas, setRiscadas] = useState<string[]>([]);
   const [marcada, setMarcada] = useState('');
   const [respondida, setRespondida] = useState<Respondida>();
-  
+    
   const btnResponder = useRef<HTMLButtonElement>(null);
 
-  const push = useNavigate()
+  const navigate = useNavigate()
   const openDrawer = useDrawer();
   const openModal = useModal();
 
   const { search, pathname } = useLocation()
-
+  
   const page = useMemo<number>(() => {
     return Number(querystring.parse(search).page) || 1
   }, [search])
 
   function next() {
-    if(meta && meta?.current_page < meta?.last_page) {
-      push(`${pathname}?page=${page+1}`)
+
+    if(meta && page < meta?.last_page) {
+      navigate(`${pathname}?page=${page+1}`)
+    } else {
+      navigate(`${pathname}?page=1`)
     }
   }
 
   function prev() {
-    if(meta && meta?.current_page > 1) {
-      push(`${pathname}?page=${page-1}`)
+    if(page > 1) {
+      navigate(`${pathname}?page=${page-1}`)
+    } else {
+      navigate(`${pathname}?page=${meta?.last_page}`)
     }
   }
 
@@ -224,7 +229,7 @@ export default function AulaDetalhe() {
         title={`${String(aula?.ordem).padStart(2, '0')} - ${aula?.name}`}
         subtitle={`${aula?.disciplina?.name} / ${aula?.meta.questoes_count} questões`}
         onBackPress={() => {
-          push(`/disciplinas/${aula?.disciplina_id}`);
+          navigate(`/disciplinas/${aula?.disciplina_id}`);
         }}>
         {!!aula && <Relogio aula={aula} />}
       </PageHeader>
