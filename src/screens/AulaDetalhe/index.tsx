@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
-import { useEffect, useRef, useState } from 'react';
+import querystring from 'query-string';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BiLoaderAlt } from 'react-icons/bi';
@@ -11,7 +12,7 @@ import {
   FaUndo
 } from 'react-icons/fa';
 import { useMutation, useQuery } from 'react-query';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
   DeleteQuestao, EditQuestao,
@@ -35,22 +36,37 @@ import styles from './AulaDetalhe.module.css';
 import ShowComentarios from './ShowComentarios';
 
 
-  
-
 export default function AulaDetalhe() {
   const { aula_id } = useParams<{ aula_id: string }>();
-  const [page, setPage] = useState(1);
   const [questao, setQuestao] = useState<Questao>();
   const [meta, setMeta] = useState<PaginateMeta>();
   const [riscadas, setRiscadas] = useState<string[]>([]);
   const [marcada, setMarcada] = useState('');
   const [respondida, setRespondida] = useState<Respondida>();
-
+  
   const btnResponder = useRef<HTMLButtonElement>(null);
 
   const { push } = useHistory();
   const openDrawer = useDrawer();
   const openModal = useModal();
+
+  const { search, pathname } = useLocation()
+
+  const page = useMemo<number>(() => {
+    return Number(querystring.parse(search).page) || 1
+  }, [search])
+
+  function next() {
+    if(meta && meta?.current_page < meta?.last_page) {
+      push(`${pathname}?page=${page+1}`)
+    }
+  }
+
+  function prev() {
+    if(meta && meta?.current_page > 1) {
+      push(`${pathname}?page=${page-1}`)
+    }
+  }
 
   useHotkeys(
     'a, b, c, d, e',
@@ -79,7 +95,8 @@ export default function AulaDetalhe() {
   useHotkeys(
     'left',
     () => {
-      setPage((p) => (p > 1 ? p - 1 : 1));
+      // setPage((p) => (p > 1 ? p - 1 : 1));
+      prev()
     },
     [page]
   );
@@ -87,7 +104,8 @@ export default function AulaDetalhe() {
   useHotkeys(
     'right',
     () => {
-      setPage((p) => (meta?.last_page && p < meta?.last_page ? p + 1 : 1));
+      // setPage((p) => (meta?.last_page && p < meta?.last_page ? p + 1 : 1));
+      next()
     },
     [meta?.last_page, page]
   );
@@ -246,7 +264,8 @@ export default function AulaDetalhe() {
                 (resp: { id: number }) => {
                   if (resp) {
                     if (meta?.current_page === meta?.last_page) {
-                      setPage(page > 1 ? page - 1 : 1);
+                      // setPage(page > 1 ? page - 1 : 1);
+                      prev()
                     } else {
                       refetchQuestao();
                     }
@@ -276,7 +295,8 @@ export default function AulaDetalhe() {
             onClick={() =>
               openDrawer(Estatisticas, { aula_id: aula_id }, (ev) => {
                 if (ev !== null) {
-                  setPage(ev + 1);
+                  // setPage(ev + 1);
+                  // next()
                 }
               })
             }
@@ -294,7 +314,7 @@ export default function AulaDetalhe() {
             <>
               <div className={styles.questaoTitle}>
                 <h1>
-                  {questao.header}
+                  {questao.header} {pathname}
                 </h1>
               </div>
               <div className={styles.enunciado}>
@@ -316,7 +336,7 @@ export default function AulaDetalhe() {
             </>
           )}
           <button
-          onClick={() => meta && meta.current_page > 1 && setPage(page - 1)}
+          onClick={() => meta && meta.current_page > 1 && prev()}
           className={styles.pageButtonLeft}>
           <FaChevronLeft />
         </button>
@@ -325,7 +345,7 @@ export default function AulaDetalhe() {
           onClick={() =>
             meta &&
             meta.current_page < meta.last_page &&
-            setPage(meta.current_page + 1)
+            next()
           }
           className={styles.pageButtonRight}>
           <FaChevronRight />

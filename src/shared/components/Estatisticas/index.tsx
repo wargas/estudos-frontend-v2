@@ -108,7 +108,6 @@ export function Estatisticas({ data, setWidth, closeDrawer = () => {} }: Compone
         )}
         {currentDay && (
           <ListQuestoes
-            onSelectQuestao={index => closeDrawer(index)}
             data={currentDay.data}
             respondidas={aula?.respondidas || []}
             questoes={aula?.questoes || []}
