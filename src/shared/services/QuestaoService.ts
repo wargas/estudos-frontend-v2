@@ -1,5 +1,7 @@
+import { AxiosResponse } from 'axios';
 import qs from 'query-string';
 import Api from "../Api";
+import { Respondida } from '../interfaces';
 
 export default class QuestaoService {
     static async getQuestioesByAulaId(aula_id: string | number, page?: number, perPage?: number) {
@@ -32,8 +34,8 @@ export default class QuestaoService {
         return data
     }
 
-    static async responder(questao_id: number, resposta: string) {
-        const { data } = await Api.post('questoes/responder', {
+    static async responder(questao_id: number, resposta: string): Promise<Respondida> {
+        const { data } = await Api.post<any, AxiosResponse<Respondida>>('questoes/responder', {
             questao_id,
             resposta,
         })

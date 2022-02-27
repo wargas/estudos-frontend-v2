@@ -1,5 +1,4 @@
 import { Redirect, Route, Switch } from 'react-router';
-import { AulaDetail } from './screens/Aula';
 import AulaDetalhe from './screens/AulaDetalhe';
 import { Aulas } from './screens/Aulas';
 import { Auth } from './screens/Auth';
@@ -9,6 +8,7 @@ import QuestoesPage from './screens/Gerenciar/QuestoesPage';
 import { Home } from './screens/Home';
 import { Tempo } from './screens/Tempo';
 import { useAuth } from './shared/auth';
+import Loading from './shared/components/Loading';
 import Layout from './shared/layout/Layout';
 
 export function Routes() {
@@ -17,7 +17,9 @@ export function Routes() {
   if (loading) {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
-        <p className='text-gray-400'>Carregando dados da sessão...</p>
+        <p className='text-gray-400'>
+          <Loading show={true} />
+        </p>
       </div>
     );
   }
@@ -34,11 +36,6 @@ export function Routes() {
             exact
             path='/disciplinas/:disciplina_id/aulas/:aula_id'
             component={AulaDetalhe}
-          />
-          <Route
-            exact
-            path='/disciplinas/:disciplina_id/aula/:aula_id/:route?/:questao_id?'
-            component={AulaDetail}
           />
           <Route exact path='/tempo' component={Tempo} />
           <Route exact path='/gerenciar' component={Gerenciar}></Route>

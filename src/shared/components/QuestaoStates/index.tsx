@@ -4,7 +4,7 @@ type Props = {
     respondidas: Respondida[]
 }
 
-export function QuestaoStates({respondidas}: Props) {
+export default function QuestaoStates({respondidas}: Props) {
     return (
         <div className='flex items-center gap-1'>
             {respondidas

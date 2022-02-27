@@ -6,38 +6,36 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import {
   FaCheck,
   FaChevronLeft,
-  FaChevronRight,
-  FaComment,
-  FaEdit,
-  FaSync,
-  FaTimes,
-  FaTrash,
+  FaChevronRight, FaEdit,
+  FaSync, FaTrash,
   FaUndo
 } from 'react-icons/fa';
 import { useMutation, useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { DeleteQuestao } from '../../shared/components/DeleteQuestao';
-import { useDrawer } from '../../shared/components/Drawer';
-import { EditComentario } from '../../shared/components/EditComentario';
-import { EditQuestao } from '../../shared/components/EditQuestao';
-import { Estatisticas } from '../../shared/components/Estatisticas';
-import { Markdown } from '../../shared/components/Markdown';
-import { useModal } from '../../shared/components/Modal';
-import { PageHeader } from '../../shared/components/PageHeader';
-import { QuestaoStates } from '../../shared/components/QuestaoItem/QuestaoStates';
-import { Relogio } from '../../shared/components/Relogio';
 import {
-  Aula,
-  Comentario,
-  Paginate,
+  DeleteQuestao, EditQuestao,
+  Estatisticas,
+  Markdown,
+  PageHeader, Relogio,
+  useDrawer
+} from '../../shared/components';
+import { useModal } from '../../shared/components/Modal';
+import QuestaoStates from '../../shared/components/QuestaoStates';
+import {
+  Aula, Paginate,
   PaginateMeta,
   Questao,
   Respondida
 } from '../../shared/interfaces';
 import AulaService from '../../shared/services/AulaService';
 import QuestaoService from '../../shared/services/QuestaoService';
+import AlternativaItem from './AlternativaItem';
 import styles from './AulaDetalhe.module.css';
+import ShowComentarios from './ShowComentarios';
+
+
+  
 
 export default function AulaDetalhe() {
   const { aula_id } = useParams<{ aula_id: string }>();
@@ -54,45 +52,21 @@ export default function AulaDetalhe() {
   const openDrawer = useDrawer();
   const openModal = useModal();
 
-  useHotkeys('a', () => {
-    handleMarcar('A');
-  });
-  useHotkeys('b', () => {
-    handleMarcar('B');
-  });
-
-  useHotkeys('c', () => {
-    handleMarcar('C');
-  });
-
-  useHotkeys('d', () => {
-    handleMarcar('D');
-  });
-
-  useHotkeys('e', () => {
-    handleMarcar('E');
-  });
+  useHotkeys(
+    'a, b, c, d, e',
+    ({ key }) => {
+      handleMarcar(key.toLocaleUpperCase());
+    },
+    [marcada, respondida]
+  );
 
   useHotkeys(
-    'shift+a',
-    () => {
-      handlerRiscadas('A');
+    'shift+a, shift+b, shift+c, shift+d, shift+e',
+    ({ key }) => {
+      handlerRiscadas(key.toLocaleUpperCase());
     },
-    [marcada]
+    [marcada, respondida]
   );
-  useHotkeys('shift+b', () => {
-    handlerRiscadas('B');
-  });
-  useHotkeys('shift+c', () => {
-    handlerRiscadas('C');
-  });
-  useHotkeys('shift+d', () => {
-    handlerRiscadas('D');
-  });
-
-  useHotkeys('shift+e', () => {
-    handlerRiscadas('E');
-  });
 
   useHotkeys('enter', () => {
     btnResponder.current?.click();
@@ -119,7 +93,7 @@ export default function AulaDetalhe() {
   );
 
   const { data: aula, isLoading } = useQuery<Aula>(['aula', aula_id], () =>
-    AulaService.getAulaById(aula_id, { withMeta: true, withDisciplina: true})
+    AulaService.getAulaById(aula_id, { withMeta: true, withDisciplina: true })
   );
 
   const {
@@ -151,21 +125,11 @@ export default function AulaDetalhe() {
     }
   );
 
-  const { data: comentario, refetch: refetchComentario } = useQuery<Comentario>(
-    ['comentarios', questao?.id],
-    () => QuestaoService.getComentario(questao?.id || 0),
-    {
-      onError: () => {
-        toast.error('Erro ao buscar comentários');
-      },
-    }
-  );
-
-  const mutateQuestao = useMutation(
+    const mutateQuestao = useMutation<Respondida>(
     () => QuestaoService.responder(questao?.id || 0, marcada),
     {
-      onSuccess: () => {
-        refetchRespondidas();
+      onSuccess: (data) => {
+        refetchRespondidas()
       },
     }
   );
@@ -328,121 +292,32 @@ export default function AulaDetalhe() {
           )}
           {questao && (
             <>
-              <div className='flex mb-2'>
-                <h1 className='font-bold text-lg text-gray-900'>
+              <div className={styles.questaoTitle}>
+                <h1>
                   {questao.header}
                 </h1>
               </div>
-
-              <div className='text-lg enunciado  text-justify'>
+              <div className={styles.enunciado}>
                 <Markdown markdown={questao.texto} />
               </div>
-
-              <div className='mt-5 flex flex-col gap-0'>
-                {questao?.alternativas.map(({ letra, conteudo }) => (
-                  <div
-                    key={letra}
-                    className={`${
-                      letra === marcada
-                        ? 'border-primary-100 bg-gray-50'
-                        : 'border-transparent'
-                    } transition-all items-center border-2 group flex  hover:bg-gray-50 rounded `}>
-                    <div
-                      onClick={() => handleMarcar(letra)}
-                      className={`flex flex-1 gap-2 cursor-pointer p-2`}>
-                      <div className=''>
-                        {!!respondida && (
-                          <button
-                            className={`${
-                              letra === respondida.resposta
-                                ? respondida.gabarito === letra
-                                  ? 'bg-green-500 border-green-500 text-white'
-                                  : 'bg-red-500 border-red-500 text-white'
-                                : respondida.gabarito === letra
-                                ? 'border-green-500 text-green-500'
-                                : 'text-gray-400'
-                            }  h-10 w-10 border-2 item rounded`}>
-                            {letra}
-                          </button>
-                        )}
-                        {!respondida && (
-                          <button
-                            className={`${
-                              letra === marcada
-                                ? 'bg-gray-400 border-gray-400 text-white'
-                                : 'text-gray-500'
-                            } h-10 w-10 border-2  item rounded`}>
-                            {letra}
-                          </button>
-                        )}
-                      </div>
-                      <div
-                        className={`flex-1 text-justify  ${
-                          riscadas.includes(letra) && 'line-through'
-                        }`}>
-                        <Markdown markdown={conteudo} />
-                      </div>
-                    </div>
-                    <div>
-                      <button
-                        onClick={() => handlerRiscadas(letra)}
-                        className={`${
-                          !!respondida && 'opacity-0'
-                        } transition-all text-transparent m-3 flex-center w-10 h-10 group-hover:bg-gray-100 rounded-full group-hover:text-gray-400`}>
-                        <FaTimes />
-                      </button>
-                    </div>
-                  </div>
+              <div className={styles.alternativasContent}>
+                {questao?.alternativas.map((alternativa) => (
+                  <AlternativaItem
+                    onDelete={handlerRiscadas}
+                    onSelectLetra={handleMarcar}
+                    key={alternativa.letra}
+                    alternativa={alternativa}
+                    riscadas={riscadas}
+                    respondida={respondida}
+                    marcada={marcada}
+                  />
                 ))}
               </div>
             </>
           )}
-        </div>
-
-        <div className='border-t p-5 flex items-center'>
           <button
-            ref={btnResponder}
-            onClick={handlerResponder}
-            disabled={marcada === '' || mutateQuestao.isLoading || !!respondida}
-            className='text-white disabled:opacity-50 flex gap-3 flex-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5'>
-            {mutateQuestao.isLoading ? (
-              <BiLoaderAlt className='animate-spin text-primary-600' />
-            ) : (
-              <FaCheck />
-            )}
-            <span> Responder</span>
-          </button>
-          <div className='ml-auto'></div>
-        </div>
-
-        <div style={{ minHeight: 150 }} className='p-5 border-t flex flex-col'>
-          <h1 className='text-2xl mb-3 text-gray-700'>Comentário</h1>
-          {comentario?.texto ? (
-            <div style={{ filter: !!respondida ? 'blur(0px)' : 'blur(5px)' }}>
-              <Markdown markdown={comentario.texto} />
-            </div>
-          ) : (
-            <div className='text-gray-300'>Sem comentário</div>
-          )}
-          <div className='flex pt-5 mt-auto'>
-            <button
-              onClick={() =>
-                openDrawer(
-                  EditComentario,
-                  { id: questao?.id },
-                  refetchComentario
-                )
-              }
-              className='text-white ml-auto  flex gap-3 flex-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5'>
-              <FaComment />
-              <span>Editar</span>
-            </button>
-          </div>
-        </div>
-
-        <button
           onClick={() => meta && meta.current_page > 1 && setPage(page - 1)}
-          className='absolute opacity-95 hover:opacity-100 transform -translate-y-5 w-10 h-10 flex-center rounded-full top-1/2 -left-4 bg-white shadow'>
+          className={styles.pageButtonLeft}>
           <FaChevronLeft />
         </button>
 
@@ -452,9 +327,26 @@ export default function AulaDetalhe() {
             meta.current_page < meta.last_page &&
             setPage(meta.current_page + 1)
           }
-          className='absolute opacity-95 hover:opacity-100 transform -translate-y-5 w-10 h-10 flex-center rounded-full top-1/2 -right-4 bg-white shadow'>
+          className={styles.pageButtonRight}>
           <FaChevronRight />
         </button>
+        </div>
+
+        <div className={styles.footer}>
+          <button
+            ref={btnResponder}
+            onClick={handlerResponder}
+            disabled={marcada === '' || mutateQuestao.isLoading || !!respondida}
+            className={styles.btnResponder}>
+            {mutateQuestao.isLoading ? (
+              <BiLoaderAlt className={styles.loading} />
+            ) : (
+              <FaCheck />
+            )}
+            <span> Responder</span>
+          </button>
+        </div>
+        <ShowComentarios show={!!respondida} questao_id={questao?.id || 0} />
       </div>
     </div>
   );

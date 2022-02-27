@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from 'react';
 import styles from './Drawer.module.css';
 
 
+
 export type ComponentProps = {
   data?: any;
   closeDrawer?: (data: any) => void;

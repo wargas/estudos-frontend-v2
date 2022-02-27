@@ -86,7 +86,7 @@ export function Estatisticas({ data, setWidth, closeDrawer = () => {} }: Compone
 
   function loadAula() {
     setLoading(true);
-    Api.get<Aula>(`aulas/${aula_id}`)
+    Api.get<Aula>(`aulas/${aula_id}?withRegistros=true&withRespondidas=true&withQuestoes=true`)
       .then(({ data }) => setAula(data))
       .catch(() => toast.error('Erro ao buscar a aula'))
       .finally(() => setLoading(false));

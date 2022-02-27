@@ -8,7 +8,6 @@ import { AuthProvider } from './shared/auth';
 import { DrawerProvider } from './shared/components/Drawer';
 import { ModalProvider } from './shared/components/Modal';
 
-
 const queryClient = new QueryClient();
 
 function App() {

@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { BiLoaderAlt } from 'react-icons/bi';
 import {
   FaCheck,
@@ -10,6 +11,7 @@ import {
 import { toast } from 'react-toastify';
 import Api from '../../Api';
 import { Comentario as IComentario, Questao } from '../../interfaces';
+import addTags from '../../services/AddTag';
 import { ComponentProps } from '../Drawer';
 import { Markdown } from '../Markdown';
 import styles from './Style.module.css';
@@ -23,6 +25,8 @@ export function EditComentario({
   const [comentario, setComentario] = useState<IComentario>({} as IComentario);
   const [allowEdit, setAllowEdit] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setWidth('md');
@@ -64,6 +68,30 @@ export function EditComentario({
       .finally(() => setLoading(false));
   }
 
+  useHotkeys(
+    'ctrl+b, ctrl+i, ctrl+u, ctrl+s, ctrl+l, ctrl+1',
+    (ev: KeyboardEvent) => {
+
+      ev.preventDefault();
+
+      if (textareaRef.current) {
+        const { selectionEnd, selectionStart } = textareaRef.current;
+
+          setComentario((_coment: IComentario) => {
+           const texto = addTags(_coment.texto, selectionStart, selectionEnd, ev.key)
+            return {..._coment, texto}
+          }
+          
+        );
+      }
+    },
+    {
+      enableOnTags: ['TEXTAREA'],
+      filterPreventDefault: true,
+    },
+    [textareaRef, comentario]
+  );
+
   return (
     <div className={styles.wrapper}>
       <div className='h-14 bg-primary-600 flex items-center'>
@@ -84,6 +112,7 @@ export function EditComentario({
         )}
         {allowEdit && (
           <textarea
+            ref={textareaRef}
             onChange={(ev) =>
               setComentario({
                 ...(comentario as IComentario),

@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { ClipboardEvent, useEffect, useState } from 'react';
+import { ClipboardEvent, useEffect, useRef, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { FaChevronLeft, FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Api from '../../Api';
 import { QuestoesToMarkdown } from '../../Helpers';
 import { Questao } from '../../interfaces';
+import addTags from '../../services/AddTag';
 import { ComponentProps } from '../Drawer';
 
 export function EditQuestao({
@@ -18,6 +20,8 @@ export function EditQuestao({
   const [showGabarito, setShowGabarito] = useState(false);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (questao) {
@@ -65,7 +69,7 @@ export function EditQuestao({
       formData.append('name', name);
 
       const { data } = await axios.post<any>(
-        `https://api.imgbb.com/1/upload?key=f6348ee2d87ec6e0e0bf05556592ca86`,
+        `https://api.imgbb.com/1/upload?key=13157499d80a2ace97a7a5c6a2e7702a`,
         formData
       );
 
@@ -83,6 +87,28 @@ export function EditQuestao({
       ev.preventDefault();
     }
   }
+
+  useHotkeys(
+    'ctrl+b, ctrl+i, ctrl+u, ctrl+s, ctrl+l, ctrl+1',
+    (ev: KeyboardEvent) => {
+      if (textareaRef.current) {
+        const { selectionEnd, selectionStart } = textareaRef.current;
+
+          setText((_text) =>
+          addTags(_text, selectionStart, selectionEnd, ev.key.toLocaleLowerCase())
+        );
+      }
+
+      console.log(ev.key)
+
+      ev.preventDefault();
+    },
+    {
+      enableOnTags: ['TEXTAREA'],
+      filterPreventDefault: true,
+    },
+    [textareaRef, text]
+  );
 
   return (
     <div className='flex flex-col h-screen'>
@@ -103,6 +129,7 @@ export function EditQuestao({
         <textarea
           onPaste={handlerPaste}
           value={text}
+          ref={textareaRef}
           onChange={(ev) => setText(ev.target.value)}
           className='flex-1 p-5 m-5 text-base scroll focus:outline-none resize-none bg-gray-50 rounded shadow-sm border'
         />
@@ -114,7 +141,9 @@ export function EditQuestao({
             <input
               disabled={!showGabarito}
               type={showGabarito ? 'text' : 'password'}
-              onChange={(e) => setGabarito(String(e.target.value).toUpperCase()[0])}
+              onChange={(e) =>
+                setGabarito(String(e.target.value).toUpperCase()[0])
+              }
               className='bg-transparent w-10 focus:outline-none'
               value={gabarito}
             />
@@ -135,3 +164,6 @@ export function EditQuestao({
     </div>
   );
 }
+
+
+

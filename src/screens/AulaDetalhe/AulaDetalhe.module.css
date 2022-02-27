@@ -39,3 +39,80 @@
 .loadingRespondidas {
     @apply animate-spin text-gray-500
 }
+
+.questaoTitle {
+    @apply flex mb-2
+}
+
+.questaoTitle h1 {
+    @apply font-bold text-lg text-gray-900
+}
+
+.enunciado {
+    @apply text-lg   text-justify
+}
+
+
+.enunciado p,
+ul,
+ol {
+    @apply text-gray-800;
+  margin-bottom: 0.5rem;
+}
+
+.enunciado table {
+  @apply w-full border-t;
+}
+
+.enunciado table tr {
+  @apply border-b h-8;
+}
+
+.enunciado table tr td,
+th {
+  @apply px-3;
+}
+
+.enunciado ul {
+  list-style-type: square;
+  list-style-position: inside;
+}
+
+.enunciado ol {
+  list-style-type: decimal-leading-zero;
+  list-style-position: inside;
+}
+
+.enunciado ul li,
+ol li,
+table {
+  margin-bottom: 0.3rem;
+}
+
+.enunciado table {
+  @apply border shadow-sm;
+}
+
+.alternativasContent {
+    @apply mt-5 flex flex-col gap-0
+}
+
+.footer {
+    @apply border-t p-5 flex items-center
+}
+
+.btnResponder {
+    @apply text-white disabled:opacity-50 flex gap-3 items-center justify-center bg-primary-600 hover:bg-primary-700 transition-all rounded-full h-9 px-5
+}
+
+.btnResponder .loading {
+    @apply animate-spin text-primary-600
+}
+
+.pageButtonLeft {
+    @apply absolute opacity-95 hover:opacity-100 transform -translate-y-5 w-10 h-10 flex items-center justify-center rounded-full top-1/2 -left-4 bg-white shadow
+}
+
+.pageButtonRight {
+    @apply absolute opacity-95 hover:opacity-100 transform -translate-y-5 w-10 h-10 flex items-center justify-center rounded-full top-1/2 -right-4 bg-white shadow
+}

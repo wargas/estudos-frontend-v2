@@ -54,16 +54,16 @@ export type Questao = {
         name: string,
         image_url: string
     }
-    alternativas: [
-        {
-            conteudo: string
-            letra: string
-            correta: boolean
-        }
-    ],
+    alternativas: Alternativa[],
     respondidas: Respondida[],
     texto: string,
     header: string
+}
+
+export type Alternativa =  {
+    conteudo: string
+    letra: string
+    correta: boolean
 }
 
 export type Comentario = {
