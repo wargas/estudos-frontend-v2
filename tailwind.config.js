@@ -11,7 +11,7 @@ module.exports = {
         primary: colors.slate
       },
       fontFamily: {
-        sans: ["'Inter'", 'sans-serif']
+        sans: ["'Roboto'", 'times']
       },
       fontSize: {
         xs: ['0.6rem', { lineHeight: '1rem' }],
