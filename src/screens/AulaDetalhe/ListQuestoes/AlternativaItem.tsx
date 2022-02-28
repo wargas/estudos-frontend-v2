@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { FaTimes } from "react-icons/fa"
-import { Markdown } from "../../shared/components/Markdown"
-import { Alternativa, Respondida } from "../../shared/interfaces"
+import { Markdown } from "../../../shared/components/Markdown"
+import { Alternativa, Respondida } from "../../../shared/interfaces"
 
 type Props = {
     alternativa: Alternativa,

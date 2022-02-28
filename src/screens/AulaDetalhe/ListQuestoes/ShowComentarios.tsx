@@ -2,11 +2,11 @@ import { FC } from "react"
 import { FaComment } from "react-icons/fa"
 import { useQuery } from "react-query"
 import { toast } from "react-toastify"
-import { useDrawer } from "../../shared/components/Drawer"
-import { EditComentario } from "../../shared/components/EditComentario"
-import { Markdown } from "../../shared/components/Markdown"
-import { Comentario } from "../../shared/interfaces"
-import QuestaoService from "../../shared/services/QuestaoService"
+import { useDrawer } from "../../../shared/components/Drawer"
+import { EditComentario } from "../../../shared/components/EditComentario"
+import { Markdown } from "../../../shared/components/Markdown"
+import { Comentario } from "../../../shared/interfaces"
+import QuestaoService from "../../../shared/services/QuestaoService"
 
 type Props = {
     questao_id: number,

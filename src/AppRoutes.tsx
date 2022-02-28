@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AulaDetalhe from './screens/AulaDetalhe';
+import ListCadernos from './screens/AulaDetalhe/ListCadernos';
+import ListQuestoes from './screens/AulaDetalhe/ListQuestoes';
 import { Aulas } from './screens/Aulas';
 import { Auth } from './screens/Auth';
 import { Disciplinas } from './screens/Disciplinas';
@@ -31,15 +33,19 @@ export function AppRoutes() {
         <Route path='/disciplinas/:id' element={<Aulas />} />
         <Route
           path='/disciplinas/:disciplina_id/aulas/:aula_id'
-          element={<AulaDetalhe />}
-        />
+          element={<AulaDetalhe />}>
+            <Route path='' element={<ListCadernos />} />
+            <Route path=':caderno_id' element={<ListQuestoes />} />
+          </Route>
         <Route path='/tempo' element={<Tempo />} />
         <Route path='/gerenciar' element={<Gerenciar />}></Route>
         <Route path='/gerenciar/questoes' element={<QuestoesPage />} />
         <Route path='/' element={<Navigate replace to='/dashboard' />}></Route>
         
-
-        {!logged && <Navigate replace to='/login' />}
+        
+        {!logged && (
+          <Route path="*" element={<Navigate replace to='/login' />} />
+        )}
       </Route>
       <Route path='*' element={<p>page not found</p>} />
     </Routes>

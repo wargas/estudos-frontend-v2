@@ -1,0 +1,38 @@
+.wrapper {}
+
+.tableWrapper {
+    /* @apply  */
+}
+
+.tableWrapper table {
+    @apply w-full  shadow-sm border-collapse rounded overflow-hidden
+}
+
+.tableWrapper table thead {
+    /* @apply  */
+}
+
+.tableWrapper thead tr {
+    @apply text-left   cursor-pointer h-12 text-base 
+}
+
+.tableWrapper thead tr th {
+    @apply pl-3 
+}
+
+
+.tableWrapper table tbody {
+    @apply divide-y divide-gray-50
+}
+
+.tableWrapper tbody tr {
+    @apply text-left  cursor-pointer h-12 text-sm bg-white text-primary-600
+}
+
+.tableWrapper tbody tr:hover {
+    @apply bg-slate-50
+}
+
+.tableWrapper td, th {
+    @apply px-3
+}

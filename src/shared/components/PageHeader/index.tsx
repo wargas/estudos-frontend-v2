@@ -21,44 +21,51 @@ export function PageHeader({
   useEffect(() => {
     document.title = title || 'App Estudos';
 
-    return () => { document.title = 'App Estudos' }
+    return () => {
+      document.title = 'App Estudos';
+    };
   }, [title]);
 
-
-  if(isLoading) {
+  if (isLoading) {
     return (
-      <div className="flex animate-pulse border-b pb-3 items-center mb-3">
+      <div className='flex animate-pulse border-b pb-3 items-center mb-3'>
         <div>
-          <div className="h-9 w-9 flex-center bg-gray-200 mr-3 rounded-full"></div>
+          <div className='h-9 w-9 flex-center bg-gray-200 mr-3 rounded-full'></div>
         </div>
-        <div className="flex flex-col gap-1">
-          <div className="h-6 rounded  w-72 bg-gray-200 text-gray-200"></div>
-          <div className="h-4 rounded w-48 flex bg-gray-100"></div>
+        <div className='flex flex-col gap-1'>
+          <div className='h-6 rounded  w-72 bg-gray-200 text-gray-200'></div>
+          <div className='h-4 rounded w-48 flex bg-gray-100'></div>
         </div>
         <div className='flex animate-pulse gap-3 ml-auto'>
-          <div className="h-8 w-20 bg-gray-200 rounded-full"></div>
-          <div className="h-8 w-20 bg-gray-200 rounded-full"></div>
-          <div className="h-8 w-20 bg-gray-200 rounded-full"></div>
+          <div className='h-8 w-20 bg-gray-200 rounded-full'></div>
+          <div className='h-8 w-20 bg-gray-200 rounded-full'></div>
+          <div className='h-8 w-20 bg-gray-200 rounded-full'></div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className='flex border-b pb-3 items-center mb-3'>
-      {backButton && (
-        <button
-          style={{minWidth: '2.5rem'}}
-          onClick={() => onBackPress()}
-          className='h-9 w-9  flex-center bg-gray-100 mr-3 rounded-full'>
-          <FaChevronLeft />
-        </button>
-      )}
-      <div className='overflow-hidden mr-3'>
-        <h1 title={title} className='text-xl truncate'>{title || '-'}</h1>
-        {subtitle && <p className='text-gray-400 text-sm'>{subtitle}</p>}
+    <div className='flex space-y-3 md:space-y-0 flex-col md:flex-row border-b pb-3 md:items-center mb-3'>
+      <div className='flex items-center'>
+        {backButton && (
+          <button
+            style={{ minWidth: '2.5rem' }}
+            onClick={() => onBackPress()}
+            className='h-9 w-9  flex-center bg-gray-100 mr-3 rounded-full'>
+            <FaChevronLeft />
+          </button>
+        )}
+        <div className='overflow-hidden mr-3'>
+          <h1 title={title} className='text-xl truncate'>
+            {title || '-'}
+          </h1>
+          {subtitle && <p className='text-gray-400 text-sm'>{subtitle}</p>}
+        </div>
       </div>
-      <div className='flex ml-auto'>{children}</div>
+      <div className='flex md:ml-auto items-center justify-center'>
+        {children}
+      </div>
     </div>
   );
 }

@@ -90,6 +90,7 @@ export type Respondida = {
     acertou: number
     user_id: number
     questao_id: number
+    caderno_id: string
 }
 
 export interface Paginate<T> {
@@ -103,4 +104,14 @@ export interface PaginateMeta {
     current_page: number,
     last_page: number,
     first_page: number
+}
+
+export interface Caderno {
+    id: string,
+    inicio: string,
+    fim: string,
+    total: number,
+    acertos: number,
+    erros: number,
+    encerrado: boolean
 }
