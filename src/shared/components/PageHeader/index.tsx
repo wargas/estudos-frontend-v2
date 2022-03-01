@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import styles from './PageHeader.module.css';
 export type PageHeaderProps = {
   title?: string;
   subtitle?: string;
@@ -28,42 +28,39 @@ export function PageHeader({
 
   if (isLoading) {
     return (
-      <div className='flex animate-pulse border-b pb-3 items-center mb-3'>
-        <div>
-          <div className='h-9 w-9 flex-center bg-gray-200 mr-3 rounded-full'></div>
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loadingWrapperBackbutton}>
+          <h1></h1>
         </div>
-        <div className='flex flex-col gap-1'>
-          <div className='h-6 rounded  w-72 bg-gray-200 text-gray-200'></div>
-          <div className='h-4 rounded w-48 flex bg-gray-100'></div>
+        <div className={styles.loadingCenter}>
+          <h1 className={styles.loadingTitle}></h1>
+          <p className={styles.loadingSubtitle}></p>
         </div>
-        <div className='flex animate-pulse gap-3 ml-auto'>
-          <div className='h-8 w-20 bg-gray-200 rounded-full'></div>
-          <div className='h-8 w-20 bg-gray-200 rounded-full'></div>
-          <div className='h-8 w-20 bg-gray-200 rounded-full'></div>
+        <div className={styles.loadingRight}>
+          <div className={styles.loadingButtons}></div>
+          <div className={styles.loadingButtons}></div>
+          <div className={styles.loadingButtons}></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className='flex space-y-3 md:space-y-0 flex-col md:flex-row border-b pb-3 md:items-center mb-3'>
-      <div className='flex items-center'>
-        {backButton && (
-          <button
-            style={{ minWidth: '2.5rem' }}
-            onClick={() => onBackPress()}
-            className='h-9 w-9  flex-center bg-gray-100 mr-3 rounded-full'>
-            <FaChevronLeft />
-          </button>
-        )}
-        <div className='overflow-hidden mr-3'>
-          <h1 title={title} className='text-xl truncate'>
-            {title || '-'}
-          </h1>
-          {subtitle && <p className='text-gray-400 text-sm'>{subtitle}</p>}
-        </div>
+    <div className={styles.wrapper}>
+      {backButton && (
+        <button
+          onClick={() => onBackPress()}
+          className={styles.backbutton}>
+          <FaChevronLeft />
+        </button>
+      )}
+      <div className={styles.center}>
+        <h1 title={title}>
+          {title || '-'}
+        </h1>
+        {subtitle && <p>{subtitle}</p>}
       </div>
-      <div className='flex md:ml-auto items-center justify-center'>
+      <div className={styles.left}>
         {children}
       </div>
     </div>

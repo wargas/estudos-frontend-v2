@@ -1,0 +1,52 @@
+.wrapper {
+    @apply flex space-y-3 md:space-y-0 flex-col md:flex-row border-b pb-3 md:items-center mb-3;
+}
+
+.backbutton {
+    @apply h-9 w-9  flex items-center justify-center bg-gray-100 mr-3 rounded-full;
+    min-width: 2.5rem;
+}
+
+.center {
+    @apply overflow-hidden mr-3;
+}
+
+.center h1 {
+    @apply text-xl truncate;
+}
+
+.center p {
+    @apply text-gray-400 text-sm;
+}
+
+.left {
+    @apply flex md:ml-auto items-center justify-center;
+}
+
+.loadingWrapper {
+    @apply flex animate-pulse border-b pb-3 items-center mb-3;
+}
+
+.loadingWrapperBackbutton h1 {
+    @apply h-9 w-9 flex items-center justify-center bg-gray-200 mr-3 rounded-full;
+}
+
+.loadingCenter {
+    @apply flex flex-col gap-1
+}
+
+.loadingTitle {
+    @apply h-6 rounded  w-72 bg-gray-200 text-gray-200
+}
+
+.loadingSubtitle {
+    @apply h-4 rounded w-48 flex bg-gray-100
+}
+
+.loadingRight {
+    @apply flex animate-pulse gap-3 ml-auto
+}
+
+.loadingButtons {
+    @apply h-8 w-20 bg-gray-200 rounded-full
+}

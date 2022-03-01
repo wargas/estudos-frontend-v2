@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaEllipsisV, FaPlus } from 'react-icons/fa';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Caderno } from '../../../shared/interfaces';
@@ -15,7 +15,7 @@ const ListCadernos = () => {
   );
 
   const mutation = useMutation(() => CadernoService.create(aula_id), {
-    onSuccess: () => {
+    onSuccess: (data) => {
       refetch();
     },
   });
@@ -28,17 +28,16 @@ const ListCadernos = () => {
             <tr>
               <th>Inicio</th>
               <th>Fim</th>
-              <th>Total</th>
-              <th>Acertos</th>
-              <th>Erros</th>
-              <th>%</th>
+              <th>Nota</th>
               <th>Status</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {cadernos?.map((caderno) => (
-              <tr key={caderno.id}>
+              <tr
+                key={caderno.id}
+                onClick={() => navigate(`${caderno.id}?page=1`)}>
                 <td>
                   {caderno.inicio
                     ? DateTime.fromISO(caderno.inicio).toFormat(
@@ -51,41 +50,60 @@ const ListCadernos = () => {
                     ? DateTime.fromISO(caderno.fim).toFormat('dd/MM/yyyy hh:mm')
                     : 'Não finalizado'}
                 </td>
-                <td>{caderno.total}</td>
-                <td>{caderno.acertos}</td>
-                <td>{caderno.erros}</td>
-                <td>{((caderno.acertos / caderno.total) * 100).toFixed(1)}%</td>
+
                 <td>
-                  {caderno.encerrado ? (
-                    <span>encerrado</span>
-                  ) : (
-                    <span>pendente</span>
-                  )}
+                  {caderno.acertos + caderno.erros > 0
+                    ? (
+                        (caderno.acertos / (caderno.acertos + caderno.erros)) *
+                        100
+                      ).toFixed(1)
+                    : '0,0'}
+                  %
                 </td>
                 <td>
-                  <div className='flex justify-end'>
-                    <button onClick={() => navigate(`${caderno.id}?page=1`)}>
-                      <FaChevronRight />
+                  <div className='flex space-x-3'>
+                    {caderno.encerrado ? (
+                      <span className={`${styles.state} ${styles.stateDone}`}>
+                        encerrado
+                      </span>
+                    ) : (
+                      <span
+                        className={`${styles.state} ${styles.stateWarning}`}>
+                        pendente
+                      </span>
+                    )}
+                    <div className={styles.countWrapper}>
+                      <div className={styles.countItem}>
+                        {caderno.acertos + caderno.erros}
+                      </div>
+                      <div className={styles.countItem}>{caderno.acertos | 0}</div>
+                      <div className={styles.countItem}>{caderno.erros | 0}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div className={styles.itemActions}>
+                    <button onClick={(ev) => ev.stopPropagation()}>
+                      <FaEllipsisV />
                     </button>
                   </div>
                 </td>
               </tr>
             ))}
-            <tr>
-              <td colSpan={8}>
-                <div className='flex justify-center'>
-                  {mutation.isLoading ? (
-                    <p>Salvando...</p>
-                  ) : (
-                    <button onClick={() => mutation.mutate()}>
-                      Iniciar novo
-                    </button>
-                  )}
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
+        <div className={styles.footer}>
+          {mutation.isLoading ? (
+            <p>Salvando...</p>
+          ) : (
+            <button
+              className={styles.btnIniciar}
+              onClick={() => mutation.mutate()}>
+              <FaPlus />
+              Iniciar novo
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@
 }
 
 .tableWrapper thead tr {
-    @apply text-left   cursor-pointer h-12 text-base 
+    @apply text-left  cursor-pointer h-12 text-white bg-primary-600
 }
 
 .tableWrapper thead tr th {
@@ -26,7 +26,7 @@
 }
 
 .tableWrapper tbody tr {
-    @apply text-left  cursor-pointer h-12 text-sm bg-white text-primary-600
+    @apply text-left  cursor-pointer h-12 text-base bg-white text-primary-600
 }
 
 .tableWrapper tbody tr:hover {
@@ -35,4 +35,57 @@
 
 .tableWrapper td, th {
     @apply px-3
+}
+
+.itemActions {
+    @apply flex justify-end
+}
+
+.itemActions button {
+    @apply px-3 hover:bg-slate-100 transition-all h-10 w-10 rounded-full flex items-center justify-center
+}
+
+.state {
+    @apply px-2 rounded-full text-xs font-bold shadow-sm uppercase;
+    padding-bottom: 2px;
+}
+
+.stateWarning {
+    @apply bg-yellow-500 text-white
+}
+
+.stateDone {
+    @apply bg-green-600 text-white
+}
+
+.countWrapper {
+    @apply flex text-xs
+}
+
+.countItem {
+    @apply w-8 text-center text-white 
+}
+
+.countItem:nth-child(2) {
+    @apply bg-green-500
+}
+
+.countItem:first-child {
+    @apply rounded-l-full bg-gray-500
+}
+
+.countItem:last-child {
+    @apply rounded-r-full bg-red-500
+}
+
+.footer {
+    @apply bg-white rounded mt-3 p-3 shadow-sm flex justify-end
+}
+
+.btnIniciar {
+    @apply bg-primary-600 text-white px-5 py-2 rounded-full hover:bg-primary-700 flex items-center
+}
+
+.btnIniciar svg {
+    @apply mr-2
 }

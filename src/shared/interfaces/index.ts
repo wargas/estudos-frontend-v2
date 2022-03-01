@@ -41,7 +41,8 @@ export type Aula = {
             last: boolean,
             tempo: number
         }
-    ]
+    ],
+    cadernos: Caderno[]
 }
 
 export type Questao = {

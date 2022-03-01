@@ -42,7 +42,8 @@ export function Aulas() {
     () =>
       AulaService.getAulasByDisciplina(disciplina?.id, {
         withMeta: true,
-        withEstatisticas: true,
+        withCadernos: true,
+        withRegistros: true,
       }),
     {
       enabled: !!disciplina?.id,
@@ -50,7 +51,7 @@ export function Aulas() {
   );
 
   const openDrawer = useDrawer();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function updateOrderBy(_coluna: string) {
     const [coluna, ordem] = orderBy.split(':');
@@ -183,9 +184,22 @@ export function Aulas() {
               <tbody>
                 {aulas
                   ?.map((aula) => {
-                    const last = aula?.days.find((item) => item.last);
+                    const lastDay = DateTime.max(...aula.registros.map(r => DateTime.fromISO(r.horario)))
 
-                    return { ...aula, last };
+                    const caderno = aula?.cadernos
+                      .filter((c) => c.encerrado)
+                      .sort((a, b) => (a.fim < b.fim ? 1 : -1));
+
+                    const tempoTotal = aula?.registros.reduce((acc, cur) => {
+                      return acc + cur.tempo;
+                    }, 0);
+
+                    return {
+                      ...aula,
+                      lastDay,
+                      caderno: caderno[0] || null,
+                      tempoTotal,
+                    };
                   })
                   .map((aula) => (
                     <tr
@@ -211,25 +225,22 @@ export function Aulas() {
                         </div>
                       </td>
                       <td className='text-gray-500 text-sm'>
-                        {aula.last &&
-                          DateTime.fromSQL(aula.last.data).toFormat(
-                            'dd/MM/yyyy'
-                          )}
+                        {aula.lastDay ? aula.lastDay.toFormat('dd/MM/yyyy') : '-'}
                       </td>
                       <td className='text-gray-500 text-sm'>
-                        {!aula.last
-                          ? ''
-                          : Duration.fromMillis(
-                              aula.last.tempo * 1000
-                            ).toFormat('hh:mm:ss')}
+                        {aula.tempoTotal ? Duration.fromMillis(aula.tempoTotal * 1000).toFormat(
+                          'hh:mm:ss'
+                        ) : '-'}
                       </td>
                       <td className='text-gray-500 text-sm'>
-                        {aula.last &&
-                          aula?.last?.acertos > 0 &&
-                          ((aula.last.acertos / aula.last.total) * 100)
-                            .toFixed(1)
-                            .replace('.', ',')}
-                        {aula.last && aula?.last?.acertos > 0 ? '%' : ''}
+                        {aula.caderno
+                          ? `${(
+                              (aula.caderno.acertos / aula.caderno.total) *
+                              100
+                            ).toFixed(1)}% (${aula.caderno.acertos} de ${
+                              aula.caderno.total
+                            })`
+                          : '-'}
                       </td>
                       <td className=''>
                         <Menu as='div' className='relative'>
