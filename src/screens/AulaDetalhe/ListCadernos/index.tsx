@@ -74,7 +74,7 @@ const ListCadernos = () => {
                     )}
                     <div className={styles.countWrapper}>
                       <div className={styles.countItem}>
-                        {caderno.acertos + caderno.erros}
+                        {caderno.total}
                       </div>
                       <div className={styles.countItem}>{caderno.acertos | 0}</div>
                       <div className={styles.countItem}>{caderno.erros | 0}</div>

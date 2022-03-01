@@ -1,31 +1,52 @@
-import querystring from 'query-string';
-import { useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { DateTime } from 'luxon';
+import { useQuery } from 'react-query';
 import { PageHeader } from '../../../shared/components/PageHeader';
+import Table from '../../../shared/components/Table';
+import { Caderno } from '../../../shared/interfaces';
+import CadernoService from '../../../shared/services/CadernoService';
 
+const columns = [
+  {
+    id: 'col2',
+    Header: 'INICIO',
+    Cell: ({ row }: any) => <HeaderData data={row.values.inicio} />,
+  },
+  {
+    id: 'fim',
+    Header: 'FIM',
+    Cell: ({ row }: any) => <HeaderData data={row.values.fim} />,
+  },
+  {
+    id: 'acertos',
+    Header: 'ACERTOS',
+    accessor: 'acertos',
+  },
+  {
+    id: 'erros',
+    Header: 'ERROS',
+    accessor: 'erros',
+  },
+  {
+    id: 'total',
+    Header: 'Total',
+    accessor: 'total',
+  },
+];
+
+function HeaderData({ data }: any) {
+  return <span>{DateTime.fromISO(data).toFormat('dd/MM/yyyy')}</span>;
+}
 
 export default function QuestoesPage() {
-  
-
-  const { search } = useLocation()
-
-  
-  const page = useMemo<number>(() => Number(querystring.parse(search).page) || 1, [search])
-
+  const { data } = useQuery<Caderno[]>(['cadernos'], () =>
+    CadernoService.getByDisciplina(1668)
+  );
 
   return (
     <div>
       <PageHeader title='Gerenciar Questões' />
-      <div className='bg-white p-5 rounded shadow'>
-        
-       
 
-              {JSON.stringify(page)} <br />
-
-        <Link to={`/gerenciar/questoes?page=${page-1}`}>Next</Link>
-        <span> [{page}] </span>
-        <Link to={`/gerenciar/questoes?page=${page+1}`}>Prev</Link>
-      </div>
+      <Table data={data || []} columns={columns} />
     </div>
   );
 }
