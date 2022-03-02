@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   content: [
@@ -38,5 +39,14 @@ module.exports = {
   },
   plugins: [
     // require('@tailwindcss/typography'),
+    plugin(({addComponents}) => {
+      addComponents({
+        '.flex-center': {
+          display: 'flex',
+          'align-items': 'center',
+          'justify-content': 'center'
+        }
+      })
+    })
   ],
 }

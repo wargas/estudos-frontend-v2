@@ -83,9 +83,9 @@
 }
 
 .btnIniciar {
-    @apply bg-primary-600 text-white px-5 py-2 rounded-full hover:bg-primary-700 flex items-center
+    @apply flex-center bg-primary-600 text-white px-5 py-2 rounded-full hover:bg-primary-700
 }
 
 .btnIniciar svg {
-    @apply mr-2
+    @apply mr-2 
 }
