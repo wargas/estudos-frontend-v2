@@ -1,0 +1,11 @@
+.wrapper {
+    @apply border rounded-full h-10 min-w-[120px] mr-3 bg-white flex-center cursor-pointer select-none;
+}
+
+.data {
+    @apply text-primary-600 font-bold
+}
+
+.label {
+    @apply text-gray-400 text-xs
+}

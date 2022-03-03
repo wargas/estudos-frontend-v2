@@ -3,13 +3,13 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import { FaCheck, FaChevronLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Api from '../../Api';
-import { ComponentProps } from '../Drawer';
+import { DrawerComponentProps } from '../Drawer';
 
 export function InsertAulas({
   data,
   closeDrawer = () => {},
   setWidth = () => {},
-}: ComponentProps) {
+}: DrawerComponentProps) {
   const [text, setText] = useState('');
   const { disciplina_id = 0 } = data;
   const [loading, setLoading] = useState(false);

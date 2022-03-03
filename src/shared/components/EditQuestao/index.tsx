@@ -8,13 +8,13 @@ import Api from '../../Api';
 import { QuestoesToMarkdown } from '../../Helpers';
 import { Questao } from '../../interfaces';
 import addTags from '../../services/AddTag';
-import { ComponentProps } from '../Drawer';
+import { DrawerComponentProps } from '../Drawer';
 
 export function EditQuestao({
   data,
   closeDrawer = () => {},
-  setWidth,
-}: ComponentProps) {
+  setWidth = () => {},
+}: DrawerComponentProps) {
   const [questao, setQuestao] = useState<Questao>();
   const [gabarito, setGabarito] = useState('');
   const [showGabarito, setShowGabarito] = useState(false);

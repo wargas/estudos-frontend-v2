@@ -12,16 +12,16 @@ import { toast } from 'react-toastify';
 import Api from '../../Api';
 import { Comentario as IComentario, Questao } from '../../interfaces';
 import addTags from '../../services/AddTag';
-import { ComponentProps } from '../Drawer';
+import { DrawerComponentProps } from '../Drawer';
 import { Markdown } from '../Markdown';
 import styles from './Style.module.css';
 
 
 export function EditComentario({
   data,
-  setWidth,
+  setWidth = () => {},
   closeDrawer = () => {},
-}: ComponentProps) {
+}: DrawerComponentProps) {
   const [comentario, setComentario] = useState<IComentario>({} as IComentario);
   const [allowEdit, setAllowEdit] = useState(true);
   const [loading, setLoading] = useState(false);

@@ -24,7 +24,7 @@ export function Disciplinas() {
 
   const navigate = useNavigate();
 
-  const openDrawer = useDrawer();
+  const openFormDisciplina = useDrawer(FormDisciplina, handlerCloseDrawer);
 
   const queryClient = useQueryClient()
 
@@ -64,7 +64,7 @@ export function Disciplinas() {
           <span>Atualizar</span>
         </button>
         <button
-          onClick={() => openDrawer(FormDisciplina, {}, handlerCloseDrawer)}
+          onClick={() => openFormDisciplina({})}
           className='text-primary-600 border bg-white shadow-sm h-8 px-5 rounded-full flex items-center gap-3'>
           <FaPlus />
           <span>Cadastrar</span>

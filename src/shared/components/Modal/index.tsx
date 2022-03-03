@@ -7,6 +7,7 @@ export type ComponentProps = {
   setWidth: (value: string) => void;
 };
 export type ComponentType = (props: ComponentProps) => JSX.Element;
+
 export type ModalContextProps = {
   openModal: (
     Component: ComponentType,
@@ -49,19 +50,19 @@ export function ModalProvider(props: any) {
     <ModalContext.Provider value={{ openModal, closeModal }}>
       {props.children}
       <Transition show={!!_Component}>
-        <div className='inset-0 absolute flex items-center justify-center'>
+        <div className='inset-0 fixed flex items-center justify-center'>
           <div
             onClick={() => closeModal(null)}
-            className='inset-0 absolute cursor-pointer z-10 bg-black opacity-50'></div>
+            className='inset-0 fixed cursor-pointer  bg-black opacity-50'></div>
           <Transition.Child
             as={'div'}
-            className={`w-${width} rounded-lg  bg-white overflow-hidden shadow-lg z-50`}
-            enter="transition-all ease-linear duration-300"
-            leave="transition-all ease-linear duration-300"
+            className={`w-${width} relative rounded-lg  bg-white overflow-hidden shadow-lg `}
+            enter="transition-all ease-out duration-300"
+            leave="transition-all ease-in duration-300"
             enterFrom="transform scale-95 opacity-20"
             enterTo="transform scale-100 opacity-100"
-            leaveFrom="transform scale-100"
-            leaveTo="transform scale-95"
+            leaveFrom="transform scale-100 opacity-100"
+            leaveTo="transform scale-95 opacity-20"
             >
             {_Component && <_Component data={data} setWidth={setWidth} closeModal={closeModal} />}
           </Transition.Child>
@@ -71,7 +72,12 @@ export function ModalProvider(props: any) {
   );
 }
 
-export function useModal() {
+export function useModal(Component: ComponentType, callback: (data: any) => void = () => {}) {
   const { openModal } = useContext(ModalContext);
-  return openModal;
+
+  function dispach(data: any) {
+    openModal(Component, data, callback)
+  }
+
+  return dispach;
 }

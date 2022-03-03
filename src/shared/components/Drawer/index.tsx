@@ -2,14 +2,12 @@ import { Transition } from '@headlessui/react';
 import { createContext, useContext, useState } from 'react';
 import styles from './Drawer.module.css';
 
-
-
-export type ComponentProps = {
+export type DrawerComponentProps = {
   data?: any;
   closeDrawer?: (data: any) => void;
-  setWidth: (value: string) => void
+  setWidth?: (value: string) => void
 };
-export type ComponentType = (props: ComponentProps) => JSX.Element;
+export type ComponentType = (props: DrawerComponentProps) => JSX.Element
 export type DrawerContextProps = {
   openDrawer: (
     Component: ComponentType,
@@ -79,7 +77,13 @@ export function DrawerProvider(props: any) {
   );
 }
 
-export function useDrawer() {
+export function useDrawer(Component: ComponentType, callback: (data: any) => void = () => {}) {
   const { openDrawer } = useContext(DrawerContext);
-  return openDrawer;
+
+  function dispach(data: any) {
+    openDrawer(Component, data, callback)
+  }
+
+  return dispach;
 }
+

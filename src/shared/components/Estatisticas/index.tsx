@@ -5,7 +5,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Api from '../../Api';
 import { Aula } from '../../interfaces';
-import { ComponentProps } from '../Drawer';
+import { DrawerComponentProps } from '../Drawer';
 import { ListQuestoes } from '../ListQuestoes';
 
 type DayProps = {
@@ -16,7 +16,7 @@ type DayProps = {
   tempo: number;
 };
 
-export function Estatisticas({ data, setWidth, closeDrawer = () => {} }: ComponentProps) {
+export function Estatisticas({ data, setWidth = () => {}, closeDrawer = () => {} }: DrawerComponentProps) {
   const [loading, setLoading] = useState(false);
   const [currentDay, setCurrentDay] = useState<DayProps>();
   const [aula, setAula] = useState<Aula>();

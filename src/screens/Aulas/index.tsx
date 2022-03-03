@@ -15,6 +15,7 @@ import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router';
 import { useDrawer } from '../../shared/components/Drawer';
 import { EditQuestoes } from '../../shared/components/EditQuestoes';
+import SelectAula from '../../shared/components/FormSelectAula';
 import { InsertAulas } from '../../shared/components/InsertAulas';
 import Loading from '../../shared/components/Loading';
 import { PageHeader } from '../../shared/components/PageHeader';
@@ -50,7 +51,19 @@ export function Aulas() {
     }
   );
 
-  const openDrawer = useDrawer();
+  const openInserAulas = useDrawer(InsertAulas, (result) => {
+    if (result) {
+      refetchAulas();
+    }
+  });
+  const openEditQuestoes = useDrawer(EditQuestoes, (ret) =>
+    handlerUpdateQuestoes(ret)
+  );
+
+  const openSelectAula = useDrawer(SelectAula, () => {
+    
+  })
+
   const navigate = useNavigate();
 
   function updateOrderBy(_coluna: string) {
@@ -63,7 +76,7 @@ export function Aulas() {
     }
   }
 
-  async function handlerUpdateQuestoes(retorno: any, aula_id: number) {
+  async function handlerUpdateQuestoes(retorno: any) {
     if (retorno) {
       await refetchAulas();
     }
@@ -87,17 +100,7 @@ export function Aulas() {
             <span>Adicionar Aula</span>
           </button>
           <button
-            onClick={() =>
-              openDrawer(
-                InsertAulas,
-                { disciplina_id: disciplina.id },
-                (result) => {
-                  if (result) {
-                    refetchAulas();
-                  }
-                }
-              )
-            }
+            onClick={() => openInserAulas({ disciplina_id: disciplina.id })}
             className={styles.actionButton}>
             <FaPlus />
             <span>Adicionar em Lote</span>
@@ -184,7 +187,9 @@ export function Aulas() {
               <tbody>
                 {aulas
                   ?.map((aula) => {
-                    const lastDay = DateTime.max(...aula.registros.map(r => DateTime.fromISO(r.horario)))
+                    const lastDay = DateTime.max(
+                      ...aula.registros.map((r) => DateTime.fromISO(r.horario))
+                    );
 
                     const caderno = aula?.cadernos
                       .filter((c) => c.encerrado)
@@ -225,12 +230,16 @@ export function Aulas() {
                         </div>
                       </td>
                       <td className='text-gray-500 text-sm'>
-                        {aula.lastDay ? aula.lastDay.toFormat('dd/MM/yyyy') : '-'}
+                        {aula.lastDay
+                          ? aula.lastDay.toFormat('dd/MM/yyyy')
+                          : '-'}
                       </td>
                       <td className='text-gray-500 text-sm'>
-                        {aula.tempoTotal ? Duration.fromMillis(aula.tempoTotal * 1000).toFormat(
-                          'hh:mm:ss'
-                        ) : '-'}
+                        {aula.tempoTotal
+                          ? Duration.fromMillis(
+                              aula.tempoTotal * 1000
+                            ).toFormat('hh:mm:ss')
+                          : '-'}
                       </td>
                       <td className='text-gray-500 text-sm'>
                         {aula.caderno
@@ -252,11 +261,7 @@ export function Aulas() {
                           <Menu.Items className='absolute text-sm rounded right-0 z-10 w-48  bg-white shadow-lg'>
                             <Menu.Item
                               onClick={() =>
-                                openDrawer(
-                                  EditQuestoes,
-                                  { aula_id: aula.id },
-                                  (ret) => handlerUpdateQuestoes(ret, aula.id)
-                                )
+                                openEditQuestoes({ aula_id: aula.id })
                               }>
                               <div className='flex items-center gap-2 px-3 py-3 cursor-pointer hover:bg-gray-50 text-gray-700'>
                                 <FaCode />
@@ -269,10 +274,10 @@ export function Aulas() {
                                 <span> Editar Aula</span>
                               </div>
                             </Menu.Item>
-                            <Menu.Item>
+                            <Menu.Item onClick={() => openSelectAula({})}>
                               <div className='flex items-center gap-2 px-3 py-3 cursor-pointer hover:bg-gray-50 text-gray-700'>
                                 <FaSearch />
-                                <span> Detalhes </span>
+                                <span> Importar Questões </span>
                               </div>
                             </Menu.Item>
                           </Menu.Items>

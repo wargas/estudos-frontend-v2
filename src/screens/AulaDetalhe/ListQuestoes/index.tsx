@@ -12,7 +12,7 @@ import {
   FaTrash,
   FaUndo
 } from 'react-icons/fa';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
@@ -47,8 +47,23 @@ const ListQuestoes: FC = () => {
   const btnResponder = useRef<HTMLButtonElement>(null);
 
   const navigate = useNavigate();
-  const openDrawer = useDrawer();
-  const openModal = useModal();
+  const openDrawerEditQuestao = useDrawer(EditQuestao, (retorno) => {
+    if (retorno) {
+      refetchQuestao();
+    }
+  });
+
+  const openDrawerEstatisticas = useDrawer(Estatisticas, () => {});
+
+  const openModal = useModal(DeleteQuestao, (resp: { id: number }) => {
+    if (resp) {
+      if (meta?.current_page === meta?.last_page) {
+        prev();
+      } else {
+        refetchQuestao();
+      }
+    }
+  });
 
   const { search, pathname } = useLocation();
 
@@ -101,7 +116,6 @@ const ListQuestoes: FC = () => {
   useHotkeys(
     'left',
     () => {
-      // setPage((p) => (p > 1 ? p - 1 : 1));
       prev();
     },
     [page]
@@ -110,11 +124,12 @@ const ListQuestoes: FC = () => {
   useHotkeys(
     'right',
     () => {
-      // setPage((p) => (meta?.last_page && p < meta?.last_page ? p + 1 : 1));
       next();
     },
     [meta?.last_page, page]
   );
+
+  const queryClient = useQueryClient()
 
   const {
     data: questoesQuery,
@@ -142,6 +157,9 @@ const ListQuestoes: FC = () => {
       onError: () => {
         toast.error('Erro ao buscar questões respondidas');
       },
+      onSuccess: () => {
+        queryClient.refetchQueries(['caderno', caderno_id])
+      }
     }
   );
 
@@ -239,42 +257,22 @@ const ListQuestoes: FC = () => {
           <FaSync />
         </button>
         <button
-          onClick={() =>
-            openModal(
-              DeleteQuestao,
-              { id: questao?.id },
-              (resp: { id: number }) => {
-                if (resp) {
-                  if (meta?.current_page === meta?.last_page) {
-                    // setPage(page > 1 ? page - 1 : 1);
-                    prev();
-                  } else {
-                    refetchQuestao();
-                  }
-                }
-              }
-            )
-          }
+          onClick={() => openModal({ id: questao?.id })}
           className={styles.actionButton}>
           <FaTrash />
         </button>
         <button
           onClick={() =>
-            openDrawer(
-              EditQuestao,
-              { aula_id: questao?.aula_id, id: questao?.id },
-              (retorno) => {
-                if (retorno) {
-                  refetchQuestao();
-                }
-              }
-            )
+            openDrawerEditQuestao({
+              aula_id: questao?.aula_id,
+              id: questao?.id,
+            })
           }
           className={styles.actionButton}>
           <FaEdit />
         </button>
         <button
-          onClick={() => openDrawer(Estatisticas, { aula_id: aula_id })}
+          onClick={() => openDrawerEstatisticas({ aula_id: aula_id })}
           className={styles.actionButtonEstatisticas}>
           {page} de {meta?.last_page}
         </button>

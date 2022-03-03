@@ -8,6 +8,12 @@ class CadernoService {
         return data
     }
 
+    static async getById(caderno_id: string): Promise<Caderno> {
+        const { data } = await Api(`cadernos/${caderno_id}`)
+
+        return data
+    }
+
     static async create(aula_id: number | string):Promise<Caderno> {
         const { data } = await Api.post(`aulas/${aula_id}/cadernos`)
 

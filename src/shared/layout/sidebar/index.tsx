@@ -14,7 +14,7 @@ type props = {
 
 const Sidebar:FC<props> = ({showMenu}) => {
 
-  const openDrawer = useDrawer()
+  const openAlterarSenha = useDrawer(AlterarSenha)
   const { logout, user } = useAuth()
 
   return (
@@ -44,7 +44,7 @@ const Sidebar:FC<props> = ({showMenu}) => {
         <ul className=''>
           <li className='flex  px-2 my-1'>
             <button
-              onClick={() => openDrawer(AlterarSenha, {}, () => {})}
+              onClick={() => openAlterarSenha({})}
               className='text-gray-600 rounded text flex items-center pl-5 py-3 w-full transition-all hover:bg-gray-50'
               >
               <FaUserLock className='mr-3' />

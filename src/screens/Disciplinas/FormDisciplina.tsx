@@ -1,9 +1,9 @@
 import { useFormik } from 'formik';
 import { useMutation } from 'react-query';
 import Api from '../../shared/Api';
-import { ComponentProps } from '../../shared/components/Drawer';
+import { DrawerComponentProps } from '../../shared/components/Drawer';
 
-export default function FormDisciplina({ closeDrawer = () => {} }: ComponentProps) {
+export default function FormDisciplina({ closeDrawer = () => {} }: DrawerComponentProps) {
   const mutation = useMutation((newDisciplina: any) => {
     return Api.post('/disciplinas', newDisciplina);
   });

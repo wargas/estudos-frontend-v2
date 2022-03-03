@@ -6,13 +6,13 @@ import { toast } from 'react-toastify';
 import Api from '../../Api';
 import { QuestoesToMarkdown } from '../../Helpers';
 import { Questao } from '../../interfaces';
-import { ComponentProps } from '../Drawer';
+import { DrawerComponentProps } from '../Drawer';
 
 export function EditQuestoes({
   data,
   closeDrawer = () => {},
-  setWidth,
-}: ComponentProps) {
+  setWidth = () => {},
+}: DrawerComponentProps) {
   const [questoes, setQuestoes] = useState<Questao[]>([]);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);

@@ -4,6 +4,7 @@ import {
   PageHeader,
   Relogio
 } from '../../shared/components';
+import CadernoStat from '../../shared/components/CadernoStat';
 import {
   Aula
 } from '../../shared/interfaces';
@@ -27,6 +28,7 @@ export default function AulaDetalhe() {
         onBackPress={() => {
           navigate(`/disciplinas/${aula?.disciplina_id}${caderno_id ? `/aulas/${aula_id}` : ''}`);
         }}>
+          {!!caderno_id && <CadernoStat caderno_id={caderno_id} />}
         {!!aula && <Relogio aula={aula} />}
       </PageHeader>
       <Outlet />
