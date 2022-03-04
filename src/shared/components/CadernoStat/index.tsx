@@ -9,7 +9,7 @@ type Props = {
 };
 
 type DataTypes = string;
-const typesAvaiables = ['total', 'acertos', 'erros', 'nota'];
+const typesAvaiables = ['acertos', 'erros', 'nota'];
 
 export default function CadernoStat({ caderno_id }: Props) {
   const [type, setType] = useState<DataTypes>('nota');
@@ -38,25 +38,31 @@ export default function CadernoStat({ caderno_id }: Props) {
     <div className={styles.wrapper} onClick={changeToNext}>
       {type === 'nota' && (
         <>
-          <span className={styles.data}>{data && (data?.acertos/(data?.erros + data?.acertos) * 100).toFixed(1)}%</span>
+          <span className={styles.data}>
+            {data &&
+              ((data?.acertos / (data?.erros + data?.acertos)) * 100).toFixed(
+                1
+              )}
+            %
+          </span>
           <span className={styles.label}>{type}</span>
         </>
       )}
       {type === 'acertos' && (
         <>
-          <span className={styles.data}>{data && data?.acertos}</span>
+          <span className={styles.data}>
+            {(data && data?.acertos) || 0}/
+            {(data?.erros || 0) + (data?.acertos || 0)}
+          </span>
           <span className={styles.label}>{type}</span>
         </>
       )}
       {type === 'erros' && (
         <>
-          <span className={styles.data}>{data && data?.erros}</span>
-          <span className={styles.label}>{type}</span>
-        </>
-      )}
-      {type === 'total' && (
-        <>
-          <span className={styles.data}>{data && data?.total}</span>
+          <span className={styles.data}>
+            {(data && data?.erros) || 0}/
+            {(data?.erros || 0) + (data?.acertos || 0)}
+          </span>
           <span className={styles.label}>{type}</span>
         </>
       )}
