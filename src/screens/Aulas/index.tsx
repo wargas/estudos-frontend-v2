@@ -29,6 +29,8 @@ export function Aulas() {
 
   const { id = null } = useParams<{ id: string }>();
 
+  
+
   const { data: disciplina, isLoading: isLoadingDisciplina } =
     useQuery<Disciplina>(['disciplina', id], () =>
       DisciplinaService.getDisciplinaById(id || '')
@@ -39,7 +41,7 @@ export function Aulas() {
     isLoading: isLoadingAula,
     refetch: refetchAulas,
   } = useQuery<Aula[]>(
-    ['aulas', orderBy, disciplina?.id],
+    ['aulas', disciplina?.id],
     () =>
       AulaService.getAulasByDisciplina(disciplina?.id, {
         withMeta: true,
@@ -51,6 +53,7 @@ export function Aulas() {
     }
   );
 
+  
   const openInserAulas = useDrawer(InsertAulas, (result) => {
     if (result) {
       refetchAulas();
@@ -60,9 +63,7 @@ export function Aulas() {
     handlerUpdateQuestoes(ret)
   );
 
-  const openSelectAula = useDrawer(SelectAula, () => {
-    
-  })
+  const openSelectAula = useDrawer(SelectAula, () => {});
 
   const navigate = useNavigate();
 
@@ -113,7 +114,9 @@ export function Aulas() {
             {isLoadingAula ? (
               <h1 className={styles.loading}></h1>
             ) : (
-              <h1>{aulas?.length || 0} aulas encontradas</h1>
+              <h1>
+                {aulas?.length || 0} {orderBy} aulas encontradas
+              </h1>
             )}
           </div>
           <div className={styles.search}>
@@ -205,6 +208,17 @@ export function Aulas() {
                       caderno: caderno[0] || null,
                       tempoTotal,
                     };
+                  })
+                  .sort((a, b) => {
+                    if (orderBy.startsWith('nota:')) {
+                      const notaA = a.caderno.acertos / a.caderno.total;
+                      const notaB = b.caderno.acertos / b.caderno.total;
+                      if(orderBy.endsWith(':asc')) {
+                        return notaA - notaB;
+                      }
+                      return notaB - notaA
+                    }
+                    return 0
                   })
                   .map((aula) => (
                     <tr

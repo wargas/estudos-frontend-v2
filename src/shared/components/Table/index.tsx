@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import {
-    useColumnOrder,
-    useFilters,
-    useRowSelect,
-    useTable
+  useColumnOrder,
+  useFilters,
+  useRowSelect, useTable
 } from 'react-table';
 
 type Props = {
@@ -17,23 +16,16 @@ const Table: FC<Props> = ({ columns, data }) => {
     useColumnOrder,
     useFilters,
     useRowSelect,
-    (hook) => {
-      hook.columns.push((cols) => [{
-          id: 'start',
-          Header: () => <input type="checkbox" />,
-          Cell: () => <input type="checkbox" />
-      },...cols]);
-    }
   );
 
   return (
-    <div className='bg-white shadow-sm rounded overflow-hidden'>
+    <div className=''>
       <table className='w-full border-collapse' {...instance.getTableProps()}>
         <thead>
           {instance.headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th className='h-12 px-4 text-left' {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th className='h-10 px-4 text-left cursor-pointer' {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
           ))}

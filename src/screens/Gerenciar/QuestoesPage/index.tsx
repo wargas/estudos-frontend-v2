@@ -7,14 +7,16 @@ import CadernoService from '../../../shared/services/CadernoService';
 
 const columns = [
   {
-    id: 'col2',
+    id: 'inicio',
     Header: 'INICIO',
     Cell: ({ row }: any) => <HeaderData data={row.values.inicio} />,
+    accessor: 'inicio',
   },
   {
     id: 'fim',
     Header: 'FIM',
     Cell: ({ row }: any) => <HeaderData data={row.values.fim} />,
+    accessor: 'fim',
   },
   {
     id: 'acertos',
@@ -45,8 +47,9 @@ export default function QuestoesPage() {
   return (
     <div>
       <PageHeader title='Gerenciar Questões' />
-
-      <Table data={data || []} columns={columns} />
+      <div className='bg-white shadow'>
+        <Table data={data || []} columns={columns} />
+      </div>
     </div>
   );
 }
