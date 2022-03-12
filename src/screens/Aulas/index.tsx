@@ -211,6 +211,9 @@ export function Aulas() {
                   })
                   .sort((a, b) => {
                     if (orderBy.startsWith('nota:')) {
+                      if(!a?.caderno || !b.caderno ) {
+                        return 0
+                      }
                       const notaA = a.caderno.acertos / a.caderno.total;
                       const notaB = b.caderno.acertos / b.caderno.total;
                       if(orderBy.endsWith(':asc')) {
