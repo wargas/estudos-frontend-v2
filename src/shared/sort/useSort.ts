@@ -1,15 +1,11 @@
-export default function useSort<T = any>(data: T[], field: string, direction: 'asc' | 'desc') {
+export default function useSort<T = any>(data: T[], fnc: (item: T) => any, sort: 'asc' | 'desc' = 'asc') {
 
     return data.sort((a: T, b: T) => {
 
-
-
-        console.log(getValue(a, 'caderno.total'))
+        if(fnc(a) > fnc(b)) {
+            sort === 'asc'? 1 : -1
+        }       
 
         return 0
     })
-}
-
-function getValue(obj: any, key: string) {
-    return Object.entries(obj)
 }

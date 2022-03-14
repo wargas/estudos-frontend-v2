@@ -9,4 +9,10 @@ export default class DisciplinaService {
 
         return data;
     }
+
+    static async getAll() {
+        const { data } = await Api.get(`disciplinas`)
+
+        return data;
+    }
 }

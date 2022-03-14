@@ -36,6 +36,8 @@ export function Aulas() {
       DisciplinaService.getDisciplinaById(id || '')
     );
 
+
+
   const {
     data: aulas,
     isLoading: isLoadingAula,
@@ -52,6 +54,10 @@ export function Aulas() {
       enabled: !!disciplina?.id,
     }
   );
+
+  // const aulasSort = useSort<Aula>(aulas || [], (aula) => {
+  //   return aula.cadernos[0].acertos
+  // }, 'asc')
 
   
   const openInserAulas = useDrawer(InsertAulas, (result) => {
