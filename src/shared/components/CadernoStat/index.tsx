@@ -40,7 +40,7 @@ export default function CadernoStat({ caderno_id }: Props) {
         <>
           <span className={styles.data}>
             {data &&
-              ((data?.acertos / (data?.erros + data?.acertos)) || 0 * 100).toFixed(
+              (((data?.acertos / (data?.erros + data?.acertos)) * 100) || 0).toFixed(
                 1
               )}
             %
