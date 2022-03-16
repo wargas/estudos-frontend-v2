@@ -129,7 +129,7 @@ const ListQuestoes: FC = () => {
     [meta?.last_page, page]
   );
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const {
     data: questoesQuery,
@@ -158,8 +158,8 @@ const ListQuestoes: FC = () => {
         toast.error('Erro ao buscar questões respondidas');
       },
       onSuccess: () => {
-        queryClient.refetchQueries(['caderno', caderno_id])
-      }
+        queryClient.refetchQueries(['caderno', caderno_id]);
+      },
     }
   );
 
@@ -237,7 +237,12 @@ const ListQuestoes: FC = () => {
             <img src={questao.banca.image_url} alt={questao.banca.name} />
           )}
         </div>
+        <div className={styles.questaoTitle}>
+          <h1>{questao && questao.header}</h1>
+        </div>
+        <div className='ml-auto'></div>
         <QuestaoStates respondidas={respondidas || []} />
+
         {isLoadingResponidas && (
           <button className={styles.actionButton}>
             <AiOutlineLoading3Quarters className={styles.loadingRespondidas} />
@@ -250,7 +255,7 @@ const ListQuestoes: FC = () => {
             <FaUndo />
           </button>
         )}
-        <div className='ml-auto'></div>
+        
         <button
           onClick={() => refetchQuestao()}
           className={styles.actionButton}>
@@ -285,9 +290,6 @@ const ListQuestoes: FC = () => {
         )}
         {questao && (
           <>
-            <div className={styles.questaoTitle}>
-              <h1>{questao.header}</h1>
-            </div>
             <div className={styles.enunciado}>
               <Markdown markdown={questao.texto} />
             </div>
