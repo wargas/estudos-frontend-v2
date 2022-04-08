@@ -238,7 +238,7 @@ const ListQuestoes: FC = () => {
           )}
         </div>
         <div className={styles.questaoTitle}>
-          <h1>{questao && questao.header}</h1>
+          <h1>[{questao && questao.id}] {questao && questao.header}</h1>
         </div>
         <div className='ml-auto'></div>
         <QuestaoStates respondidas={respondidas || []} />
